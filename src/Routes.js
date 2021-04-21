@@ -1,0 +1,58 @@
+import React from 'react'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+
+import PrivateRoute from './auth/PrivateRoute'
+import AdminRoute from './auth/AdminRoute'
+import LogIn from './User/LogIn'
+import SignUp from './User/SignUp'
+import Home from './core/Home'
+
+import UserDashboard from './User/UserDashboard'
+import AdminDashboard from './User/AdminDashboard'
+
+import CategoryList from './admin/category/CategoryList'
+import CategoryCreate from './admin/category/CategoryCreate'
+import CategoryUpdate from './admin/category/CategoryUpdate'
+
+import BrandList from './admin/brand/BrandList'
+import BrandCreate from './admin/brand/BrandCreate'
+import BrandUpdate from './admin/brand/BrandUpdate'
+
+import ProductList from './admin/product/ProductList'
+import ProductCreate from './admin/product/ProductCreate'
+import ProductUpdate from './admin/product/ProductUpdate'
+
+const Routes = () => {
+	return(
+		<div>
+			<Router>
+				<Switch>
+					<Route path="/login" exact component={LogIn}></Route>
+					<Route path="/signup" exact component={SignUp}></Route>
+					<Route path="/" exact component={Home}></Route>
+					
+					<PrivateRoute path="/user/dashboard" exact component={UserDashboard}></PrivateRoute>
+
+					{/* Admin Routes */}
+					<AdminRoute path="/admin/dashboard" exact component={AdminDashboard}></AdminRoute>
+
+					<AdminRoute path="/admin/category" exact component={CategoryList}></AdminRoute>
+					<AdminRoute path="/admin/category/new" exact component={CategoryCreate}></AdminRoute>
+					<AdminRoute path="/admin/category/:id" component={CategoryUpdate}></AdminRoute>
+
+					<AdminRoute path="/admin/brand" exact component={BrandList}></AdminRoute>
+					<AdminRoute path="/admin/brand/new" exact component={BrandCreate}></AdminRoute>
+					<AdminRoute path="/admin/brand/:id" component={BrandUpdate}></AdminRoute>
+
+					<AdminRoute path="/admin/product" exact component={ProductList}></AdminRoute>
+					<AdminRoute path="/admin/product/new" exact component={ProductCreate}></AdminRoute>
+					<AdminRoute path="/admin/product/:id" exact component={ProductUpdate}></AdminRoute>
+
+				</Switch>
+			</Router>
+		</div>
+	)
+}
+
+
+export default Routes

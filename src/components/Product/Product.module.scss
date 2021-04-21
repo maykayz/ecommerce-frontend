@@ -1,0 +1,83 @@
+.product{
+	img{
+		max-height:250px;
+		object-fit:contain;
+		object-position:center;
+	}
+	.title{
+		height:36px;
+		font-size: 15px;
+		font-weight: 600;
+		margin-bottom:8px;
+	}
+	.brand{
+		font-size: 11px;
+		text-transform: uppercase;
+		font-weight:500;
+		margin:0;
+		color:#636363;
+	}
+	.saleBadge{
+		position:absolute;
+		right:0;
+		top:0;
+		z-index:1;
+		padding:6px 10px;;
+	}
+	.price{
+		font-size: 16px;
+		font-weight:500;
+		white-space: nowrap;
+		margin-bottom:0px;
+	}
+	.oldPrice{
+		font-size:12px;
+		font-weight:400;
+		text-decoration: line-through;
+		white-space: nowrap;
+		color:red;
+		margin-bottom:0px;
+	}
+	.rating{
+		img{
+			width:13px;
+			margin:0 1px;
+		}
+	}
+	.cart{
+		img{
+			width:20px;
+		}
+		.cartBtn{
+			width:40px;
+			height:40px;
+			border-radius:20px;
+			margin:auto;
+			padding:0;
+		
+			transition:all 0.3s ease-in-out;
+			&:focus{
+				box-shadow:none;
+			}
+			&:hover{
+				background:#E66300;
+				transition:all 0.3s ease-in-out;
+				svg{
+					fill:#fff;
+					transition:all 0.3s ease-in-out;
+				}
+			}
+			svg{
+				width:20px;
+				fill:#000;
+				transition:all 0.3s ease-in-out;
+			}
+			
+		}
+	}
+}
+@media (max-width: 600px) {
+	.price{
+		font-size: 14px!important;
+	}
+}	

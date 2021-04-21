@@ -1,0 +1,24 @@
+#basic-navbar-nav{
+	.nav-link{
+		padding: 5px 10px!important;
+		position:relative;
+		&::after{
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right:0;
+			margin:0 auto;
+			display: block;
+			content: '';
+			width: 0px;
+			height: 1px;
+			background: rgb(58, 58, 58);
+			transition:width 0.3s ease-in-out;
+		}
+		&:hover,&.active{
+			&::after{
+				width:100%;
+			}
+		}
+	}
+}
