@@ -1,5 +1,5 @@
 import { call, put, takeEvery} from 'redux-saga/effects'
-import {createProduct,getProduct,updateProduct,filterProducts,deleteProduct} from '../../services/product'
+import {createProduct,getProduct,updateProduct,filterProducts,getRelatedProducts,deleteProduct} from '../../services/product'
 import {
 	CREATE_PRODUCT,
 	CREATE_PRODUCT_REQUESTED,
@@ -9,6 +9,8 @@ import {
 	DELETE_PRODUCT,
 	GET_PRODUCTS_REQUESTED,
 	GET_PRODUCTS,
+	GET_RELATED_PRODUCTS_REQUESTED,
+	GET_RELATED_PRODUCTS,
 	GET_PRODUCT_REQUESTED,
 	GET_PRODUCT,
 	LOADING,
@@ -120,7 +122,7 @@ function* getProductsRequested(action) {
 			products: res.data.data,
 			total: res.data.total,
 			totalPage: res.data.totalPage,
-			currentPage: res.data.currentPage
+			currentPage: res.data.currentPage,
 		})
 	}catch(e){
 		let errorMessage= 'Ooops...! Something went wrong..!'
@@ -137,6 +139,34 @@ function* getProductsRequested(action) {
 		})
 	}
 }
+
+function* getRelatedProductsRequested(action) {
+	const {id} = action
+	try{
+		yield put({
+			type: LOADING
+		})
+		const res = yield call(getRelatedProducts,id)
+		yield put({
+			type: GET_RELATED_PRODUCTS,
+			products: res.data.data
+		})
+	}catch(e){
+		let errorMessage= 'Ooops...! Something went wrong..!'
+
+		if(e.response && e.response.data){
+			errorMessage = e.response.data.error
+		}
+		
+		yield put({
+			type: ERROR,
+			status: {
+				errorMessage: errorMessage
+			}
+		})
+	}
+}
+
 
 function* removeProductRequested(action){
 	const {id} = action
@@ -169,6 +199,7 @@ function* productSaga(){
 	yield takeEvery(CREATE_PRODUCT_REQUESTED,createProductRequested)
 	yield takeEvery(UPDATE_PRODUCT_REQUESTED,updateProductRequested)
 	yield takeEvery(GET_PRODUCTS_REQUESTED,getProductsRequested)
+	yield takeEvery(GET_RELATED_PRODUCTS_REQUESTED,getRelatedProductsRequested)
 	yield takeEvery(DELETE_PRODUCT_REQUESTED,removeProductRequested)
 	yield takeEvery(GET_PRODUCT_REQUESTED,getProductRequested)
 }

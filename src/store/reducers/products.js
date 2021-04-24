@@ -6,11 +6,14 @@ import {
 	GET_PRODUCT,
 	ERROR,
 	LOADING,
-	INIT_STATUS
+	INIT_STATUS,
+	SET_KEYWORD,
+	GET_RELATED_PRODUCTS
   } from "../types/products";
 
 const initialState = {
 	products: [],
+	related_products: [],
 	total: 0,
 	totalPage: 0,
 	currentPage: 1,
@@ -21,7 +24,8 @@ const initialState = {
 		loading:false,
 		successMessage: '',
 		errorMessage: ''
-	}
+	},
+	keyword: ''
 }
 
 const products = (state = initialState,action) => {
@@ -90,6 +94,18 @@ const products = (state = initialState,action) => {
 				},
 			}
 		}
+		case GET_RELATED_PRODUCTS: {
+			const {products} = action
+			return {
+				...state,
+				related_products: products,
+				status: {
+					...state.status,
+					isSuccess: true,
+					loading: false
+				},
+			}
+		}
 		case GET_PRODUCT : {
 			const {product} = action
 			return {
@@ -134,6 +150,13 @@ const products = (state = initialState,action) => {
 					successMessage: '',
 					errorMessage: ''
 				}
+			}
+		}
+		case SET_KEYWORD: {
+			const {keyword} = action
+			return {
+				...state,
+				keyword: keyword
 			}
 		}
 		default: {

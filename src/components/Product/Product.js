@@ -1,6 +1,7 @@
 import {Badge} from 'react-bootstrap'
 import swal from 'sweetalert';
-import { useMediaQuery } from 'react-responsive'
+import {withRouter} from 'react-router-dom'
+import {useIsMobileScreen} from '../../hooks/media'
 import styles from './Product.module.scss'
 import dummyImage from '../../assets/images/dummy.jpg'
 
@@ -43,31 +44,33 @@ const cart = () => (
 	</svg>
 )
 
-const thousandSeparator = (str) => {
+const currencyFormatter = (str) => {
 		return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-const Product = ({item}) => {
-	const isMobileScreen 	= useMediaQuery({ query: '(max-width: 639px)'})
+const Product = ({item,history}) => {
+	const isMobileScreen 	= useIsMobileScreen
 
 	return (
-		<div className={`${styles.product} card border`}>
+		<div className={`${styles.product} card border-0`} onClick={() => history.push(`/products/${item._id}`)}>
 			{
 				item.discount_price ? <Badge variant="danger" className={styles.saleBadge}>Sale %</Badge> : ''
 			}
-			{
-				item.url ?
-				<img className={styles.image} src={item.url} alt="Product" />
-				:
-				<img className={styles.image} src={dummyImage} alt="dummy"></img>
-			}
+			<div className={styles.imageWrapper}>
+				{
+					item.url ?
+					<img className={styles.image} src={item.url} alt="Product" />
+					:
+					<img className={styles.image} src={dummyImage} alt="dummy"></img>
+				}
+			</div>
 			<div className="card-body">
 				<h6 className={`${styles.title} card-title text-bold`}>{item.name}</h6>
 				<div className={`d-flex justify-content-between ${isMobileScreen ? 'flex-column' : 'flex-row'}`}>
-					<p className={`${styles.price} ${isMobileScreen ? 'order-2' : ''}`}>{thousandSeparator(item.discount_price ? item.discount_price : item.price)} MMK</p>
+					<p className={`${styles.price} ${isMobileScreen ? 'order-2' : ''}`}>{currencyFormatter(item.discount_price ? item.discount_price : item.price)} MMK</p>
 					{
 						item.discount_price ? 
-						<p className={`${styles.oldPrice} ${isMobileScreen ? 'order-1' : 'order-2'}`}>{item.discount_price ? thousandSeparator(item.price) : ''} MMK</p>
+						<p className={`${styles.oldPrice} ${isMobileScreen ? 'order-1' : 'order-2'}`}>{item.discount_price ? currencyFormatter(item.price) : ''} MMK</p>
 						: 
 						<p></p>
 					}
@@ -85,4 +88,4 @@ const Product = ({item}) => {
 	)
 }
 
-export default Product
+export default withRouter(Product)

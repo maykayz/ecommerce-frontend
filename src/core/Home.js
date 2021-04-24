@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
-import { useMediaQuery } from 'react-responsive'
 import {useDispatch,useSelector} from 'react-redux'
+import { motion, AnimatePresence } from "framer-motion"
 
+import {useIsBigScreen,useIsTabletScreen,useIsSmallScreen} from '../hooks/media'
 import Layout from './Layout'
 import {getProducts} from '../store/actions/products'
 import {getCategories} from '../store/actions/categories'
@@ -11,12 +12,19 @@ import Product from '../components/Product/Product'
 
 const Home = () => {
 
-	const isBigScreen 		= useMediaQuery({ query: '(min-width: 1256px)'})
-	const isTabletScreen	= useMediaQuery({ query: '(min-width: 1024px)'})
-	const isSmallScreen 	= useMediaQuery({ query: '(min-width: 824px)'})
-	// const isMobileScreen 	= useMediaQuery({ query: '(max-width: 823px)'})
+	const searchParams = document.location.search.split('?keyword=')[1]
 
-	const dispatch = useDispatch()
+	const isBigScreen 		= useIsBigScreen()
+	const isTabletScreen	= useIsTabletScreen()
+	const isSmallScreen 	= useIsSmallScreen()
+	const dispatch 			= useDispatch()
+
+	const categories 	= useSelector(state 	=> state.categories.categories 	? state.categories.categories : [])
+	const brands 		= useSelector(state 	=> state.brands.brands 			? state.brands.brands : [])
+	const products 		= useSelector(state 	=> state.products.products 		? state.products.products : [])
+	const total 		= useSelector(state 	=> state.products.total 		? state.products.total : 0)
+	const status 		= useSelector(state 	=> state.products.status 		? state.products.status : initialStatus)
+
 	const initialStatus = {
 		isSuccess: false,
 		isError: false,
@@ -31,41 +39,43 @@ const Home = () => {
 		sortBy: 'createdAt',
 		orderBy: 'desc',
 		limit: 12,
-		currentPage: 1,
 	}
 
 	const [filters, setFilters] = useState(initialFilter)
-
-	const categories 	= useSelector(state 	=> state.categories.categories 	? state.categories.categories : [])
-	const brands 		= useSelector(state 	=> state.brands.brands 			? state.brands.brands : [])
-	const products 		= useSelector(state 	=> state.products.products 		? state.products.products : [])
-	const total 		= useSelector(state 	=> state.products.total 		? state.products.total : 0)
-	const status 		= useSelector(state 	=> state.products.status 		? state.products.status : initialStatus)
+	const [currentPage, setCurrentPage] = useState(1)
 	
 
 	useEffect(() => {
-
 		dispatch(getCategories())
 		dispatch(getBrands())
-		dispatch(getProducts(filters))
+	},[])
 
-	},[dispatch])
-
-	const getProductList = (page) => {
-
-		dispatch(getProducts(filters))
-		
-	}
+	useEffect(() => {
+		dispatch(getProducts({
+			...initialFilter,
+			keyword:searchParams
+		}))
+	},[searchParams])
 
 	const showProductList = () => (
 		products.map((item,index) => {
 			return (
-				<div className={`my-3 ${isBigScreen ? 'col-3' : isSmallScreen ? 'col-4' : 'col-6'}`} key={`${item._id}`}>
-					<Product item={item} key={index}></Product>
-				</div>
+				<AnimatePresence>
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{easings:'easeOut'}}
+						className={`my-3 ${isBigScreen ? 'col-3' : isSmallScreen ? 'col-4' : 'col-6'}`} key={`${item._id}`}
+					>
+						<Product item={item} key={index}></Product>
+					</motion.div>
+				</AnimatePresence>
+				
 			)
 		})
 	)
+
 	const showPagination = () => {
 		let pageList = []
 		let totalPages = parseInt(total / filters.limit);
@@ -76,32 +86,30 @@ const Home = () => {
 			pageList.push(i)
 		}
 		const paginationChanged = (item) => (e) => {
-			if(item > 0 && item <= totalPages){
-				setFilters(state => (
-					{
-						...state,
-						currentPage: item
-					}
-				))
-				getProductList(item)
+			if(item > 0 && item <= totalPages && item !== currentPage){
+				setCurrentPage(item)
+				dispatch(getProducts({
+					...filters,
+					currentPage: item
+				}))
 			}
 		}
 		return (
 			<Pagination className="mt-5">
 				<Pagination.First onClick={paginationChanged(1)}/>
-				<Pagination.Prev onClick={paginationChanged(filters.currentPage - 1)}/>
+				<Pagination.Prev onClick={paginationChanged(currentPage - 1)}/>
 					{
 						pageList.map(item => 
 						(
 							<Pagination.Item 
-								active={item === filters.currentPage ? 'active': ''} 
+								active={item === currentPage ? 'active': ''} 
 								onClick={paginationChanged(item)}
 								key={item}
 							>
 								{item}
 							</Pagination.Item>))
 					}
-				<Pagination.Next onClick={paginationChanged(filters.currentPage + 1)}/>
+				<Pagination.Next onClick={paginationChanged(currentPage + 1)}/>
 				<Pagination.Last onClick={paginationChanged(totalPages)}/>
 			</Pagination>
 		)
@@ -136,7 +144,14 @@ const Home = () => {
 
 	const onHandleFilter = (e) => {
 		e.preventDefault()
-		dispatch(getProducts(filters))
+		setFilters({
+			...filters
+		})
+		setCurrentPage(1)
+		dispatch(getProducts({
+			...filters,
+			currentPage: 1
+		}))
 	}
 	const onHandleClear = (e) => {
 		e.preventDefault()
@@ -224,6 +239,7 @@ const Home = () => {
 				<div className="py-5">
 					<div className="row">
 						<div className={isBigScreen ? 'col-2' : isTabletScreen ? 'col-3' : 'd-none'}>
+							{searchParams}
 							{showCategoryFilter()}
 							{showBrandFilter()}
 							{showPriceFilter()}
@@ -251,11 +267,8 @@ const Home = () => {
 								<div>{status.errorMessage}</div>
 							)
 						}
-
 					</div>
 				</div>
-
-				
 			</Layout>
 		</div>
 	)

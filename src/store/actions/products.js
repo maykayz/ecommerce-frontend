@@ -2,15 +2,24 @@ import {
 	CREATE_PRODUCT_REQUESTED, 
 	DELETE_PRODUCT_REQUESTED, 
 	GET_PRODUCTS_REQUESTED, 
+	GET_RELATED_PRODUCTS_REQUESTED,
 	GET_PRODUCT_REQUESTED, 
 	UPDATE_PRODUCT_REQUESTED,
-	INIT_STATUS
+	INIT_STATUS,
+	SET_KEYWORD
 } from "../types/products";
 
 const getProducts = (params) => {
 	return {
 		type: GET_PRODUCTS_REQUESTED,
 		params
+	}
+}
+
+const getRelatedProducts = (id) => {
+	return {
+		type: GET_RELATED_PRODUCTS_REQUESTED,
+		id
 	}
 }
 
@@ -48,4 +57,11 @@ const initStatus = (id) => {
 	}
 }
 
-export {getProducts,getProduct,createProduct,updateProduct,deleteProduct,initStatus}
+const setKeyword = (keyword) => {
+	return {
+		type: SET_KEYWORD,
+		keyword: keyword
+	}
+}
+
+export {getProducts,getRelatedProducts,getProduct,createProduct,updateProduct,deleteProduct,initStatus,setKeyword}

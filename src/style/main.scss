@@ -1,5 +1,6 @@
 $theme-colors: (
-  'primary': #E66300,
+//   'primary': #E66300,
+  'primary': #000,
   'info': #007bff,
 //   'secondary': #E66300
 );
@@ -37,6 +38,10 @@ body {
 font-family: 'Prata', serif;
 }
 
+.btn{
+	white-space: nowrap;
+}
+
 .btn.big-btn{
 	border-radius:0px;
 	padding:15px 40px;
@@ -50,6 +55,9 @@ font-family: 'Prata', serif;
     line-height: 2; 
     color: #495057;
 	border-color:rgb(236, 236, 236);
+}
+.form-control:focus{
+	box-shadow:none;
 }
 
 

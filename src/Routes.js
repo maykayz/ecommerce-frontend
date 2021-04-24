@@ -3,12 +3,18 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 import PrivateRoute from './auth/PrivateRoute'
 import AdminRoute from './auth/AdminRoute'
-import LogIn from './User/LogIn'
-import SignUp from './User/SignUp'
-import Home from './core/Home'
+import LogIn from './user/LogIn'
+import SignUp from './user/SignUp'
 
-import UserDashboard from './User/UserDashboard'
-import AdminDashboard from './User/AdminDashboard'
+import Home from './core/Home'
+import Search from './core/Search'
+
+import UserDashboard from './user/UserDashboard'
+import ProductDetail from './core/Product/ProductDetail'
+
+
+// ADMIN ROUTES
+import AdminDashboard from './user/AdminDashboard'
 
 import CategoryList from './admin/category/CategoryList'
 import CategoryCreate from './admin/category/CategoryCreate'
@@ -29,7 +35,10 @@ const Routes = () => {
 				<Switch>
 					<Route path="/login" exact component={LogIn}></Route>
 					<Route path="/signup" exact component={SignUp}></Route>
+
 					<Route path="/" exact component={Home}></Route>
+					<Route path="/search" exact component={Search}></Route>
+					<Route path="/products/:id" exact component={ProductDetail}></Route>
 					
 					<PrivateRoute path="/user/dashboard" exact component={UserDashboard}></PrivateRoute>
 

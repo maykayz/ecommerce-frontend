@@ -22,6 +22,16 @@ export const fetchProducts = (params) => {
 	})
 }
 
+export const getRelatedProducts = (id) => {
+	return new Promise((resolve,reject) => {
+		$axios.get(`${API_URL}/products/related/${id}`).then(res => {
+			resolve(res)
+		}).catch(error => {
+			reject(error)
+		})
+	})
+}
+
 export const filterProducts = (filters) => {
 	return new Promise((resolve,reject) => {
 		$axios.post(`${API_URL}/products/search`,{

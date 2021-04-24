@@ -1,8 +1,24 @@
 .product{
-	img{
-		max-height:250px;
-		object-fit:contain;
-		object-position:center;
+	cursor: pointer;
+	&:hover{
+		img{
+			transform:scale(1.2);
+			transition: all 0.1s linear;
+		}
+	}
+	.imageWrapper{
+		height: 250px;
+		display:flex;
+		align-items: center;
+		justify-content:center;
+		overflow:hidden;
+		img{
+			width:100%;
+			max-height:250px;
+			object-fit:contain;
+			object-position:center;
+			transition: all 0.3s linear;
+		}
 	}
 	.title{
 		height:36px;
@@ -60,7 +76,8 @@
 				box-shadow:none;
 			}
 			&:hover{
-				background:#E66300;
+				// background:#E66300;
+				background:#000;
 				transition:all 0.3s ease-in-out;
 				svg{
 					fill:#fff;
