@@ -1,6 +1,10 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import {useDispatch,useSelector} from 'react-redux'
 import{Link,withRouter} from 'react-router-dom'
 import {Navbar,Nav, NavDropdown} from 'react-bootstrap'
+import { motion, AnimatePresence } from "framer-motion"
+
+import {getCart} from '../../store/actions/cart'
 
 import SearchBar from '../SearchBar/SearchBar'
 import Logo from '../logo'
@@ -14,16 +18,38 @@ import {logout,isAuthenticated} from '../../auth/index'
 
 const Menu = ({history}) => {
 
-	const {name} = isAuthenticated()
+	const dispatch 			= useDispatch()
+	const {name} 			= isAuthenticated()
+	const [showCart,setShowCart] = useState(false)
+
+	const cart_items = useSelector(state => state.cart ? state.cart : [])
+
+	useEffect(() => {
+		dispatch(getCart())
+	},[])
 
 	const isActive = (path) => (
 		history.location.pathname === path ? true : false
 	)
+	const getTotalCartItem = () => {
+		let total = 0
+		if(cart_items.length > 0){
+			cart_items.forEach(item => {
+				total+= item.count
+			})
+		}
+		return total
+	}
 	const onClickLogout = () => {
 		logout(() => {
 			history.push('/login')
 		})
 	}
+	const onClickCart =(e) => {
+		e.preventDefault()
+		setShowCart(!showCart)
+	}
+
 	const showUserName = () => (
 		isAuthenticated() ? 
 		<NavDropdown.Item className="py-2 nav-link" href={isAuthenticated().role === 0 ? "/admin/dashboard" : "/user/dashboard"}>
@@ -44,11 +70,38 @@ const Menu = ({history}) => {
 	const ProfileMenuTitle = () => (
 		<img style={{width:'20px'}} src={userIcon} alt="User Icon"></img>
 	)
+	const cartMenu = () => (
+		<motion.div
+			initial={{ opacity: 0, display:'none' }}
+			animate={showCart ? { opacity: 1, display:'block' } : {opacity: 0, display:'none'}}
+			exit={{ opacity: 0, display:'none' }}
+			transition={{easings:'easeInOut', duration: 0.2}}
+			className="cart-menu"
+		>
+			<ul className="list-style-none p-3 m-0">
+				{
+					cart_items.map(item => (
+						<li>
+							<div class="d-flex flex-row align-items-center justify-content-between">
+								<div className="d-flex flex-row align-items-center">
+									<img src={item.url} alt={item.name}></img>
+									<h6 className="px-3 my-0">{item.name}</h6>
+								</div>
+								<h6 className="qty my-0">{item.count}</h6>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+			<div className="text-center py-3">
+					<Link to="/cart" className="my-0 py-2 cursor-pointer">View My Cart</Link>
+				</div>
+		</motion.div>
+	)
 	
 	return (
 		<div>
 			<Navbar bg="white" fixed="top" expand="lg" className="d-flex flex-row justify-content-between py-4">
-			
 				<Navbar.Brand to="/">
 					<Logo></Logo>
 				</Navbar.Brand>
@@ -64,7 +117,16 @@ const Menu = ({history}) => {
 				</Navbar.Collapse>
 				<Nav className="ml-auto">
 					<Nav.Item className="nav-link"><SearchBar></SearchBar></Nav.Item>
-					<Link className="nav-link" to="/cart"><img style={{width:'20px'}} src={cart} alt="Cart Icon"></img></Link>
+					<Link className="nav-link" onClick={onClickCart}>
+						<img style={{width:'20px'}} src={cart} alt="Cart Icon"></img>
+						{
+							cart_items.length > 0 &&
+							<div className="cart-has-product">
+								{getTotalCartItem()}
+							</div>
+						}
+						{cartMenu()}
+					</Link>
 					<NavDropdown
 						title={ProfileMenuTitle()}
 						active

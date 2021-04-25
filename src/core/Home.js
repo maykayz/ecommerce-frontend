@@ -60,7 +60,7 @@ const Home = () => {
 	const showProductList = () => (
 		products.map((item,index) => {
 			return (
-				<AnimatePresence>
+				<AnimatePresence key={index}>
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
@@ -258,7 +258,7 @@ const Home = () => {
 								</div>
 							):
 							(
-								<div class="py-5 my-5 text-center mx-auto">No data found...!</div>
+								<div className="py-5 my-5 text-center mx-auto">No data found...!</div>
 							)
 						}
 						{

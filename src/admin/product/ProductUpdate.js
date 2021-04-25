@@ -219,12 +219,12 @@ const ProductUpdate = () => {
 	)
 
 	const showSuccessAlert = () => (
-		<Alert variant="success" dismissible="true" show={status.success && status.successMessage ? true: false}>Product Updated Successfully.
+		<Alert variant="success" dismissible="true" show={status.isSuccess && status.successMessage ? true: false}>Product Updated Successfully.
 		 Go to <Link to="/admin/product">Product List.</Link>
 		</Alert>
 	)
 	const showErrorAlert = () => (
-		<Alert variant="danger" dismissible="true" show={status.error && status.errorMessage ? true: false}>{status.errorMessage}</Alert>
+		<Alert variant="danger" dismissible="true" show={status.isError && status.errorMessage ? true: false}>{status.errorMessage}</Alert>
 	)
 
 	return (
@@ -235,7 +235,7 @@ const ProductUpdate = () => {
 					</div>
 					<div className="col-12 mx-auto">
 						<div className="d-flex flex-row justify-content-between">
-							<h1 className="heading">New Product</h1>
+							<h1 className="heading">Edit Product</h1>
 						</div>
 						<div className="py-5">
 							{showSuccessAlert()}

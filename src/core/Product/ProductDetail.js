@@ -19,7 +19,6 @@ import Product from '../../components/Product/Product'
 import styles from './ProductDetail.module.scss'
 
 
-
 const ProductDetail = () => {
 
 	const {id} 				= useParams()
@@ -28,21 +27,30 @@ const ProductDetail = () => {
 	const isSmallScreen 	= useIsSmallScreen()
 
 	const product = useSelector(state => state.products.product ? state.products.product : {})
+	const status = useSelector(state => state.products.status ? state.products.status : {})
 	const related_products = useSelector(state => state.products.related_products ? state.products.related_products : [])
+	
 
 	useEffect(() => {
 		dispatch(getProduct(id))
 		dispatch(getRelatedProducts(id))
-		window.scrollTo(0, 0)
 	},[dispatch,id])
 
 	const showProductPhoto = () => (
-		<div className="text-center">
-			<img className={styles.productImage} src={product.url} alt={product.name}></img>
-			{
-				product.discount_price ? <Badge variant="danger" className={styles.saleBadge}>Sale</Badge> : ''
-			}
-		</div>
+		<AnimatePresence key="show_product_photo">
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				exit={{ opacity: 0 }}
+				transition={{easings:'easeInOut',duration:0.8}}
+				className="text-center"
+			>
+				<img className={styles.productImage} src={product.url} alt={product.name}></img>
+				{
+					product.discount_price ? <Badge variant="danger" className={styles.saleBadge}>Sale</Badge> : ''
+				}
+			</motion.div>
+		</AnimatePresence>
 	)
 
 	const currencyFormatter = (str) => {
@@ -51,26 +59,68 @@ const ProductDetail = () => {
 
 	const showProductDetails = () => (
 		<div>
-			{
-				product.brand && 
-				<div>
-					<Badge className={styles.brandBadge}>{product.brand ? product.brand.name : '-'}</Badge>
+			<AnimatePresence key="show_product_details">
+				<motion.div
+					initial={{  opacity: 0 }}
+					animate={{  opacity: 1}}
+					exit={{  opacity: 0 }}
+					transition={{easings:'easeInOut',duration:0.8,delay:0.3}}
+					key="brand_badge"
+				>
+				{
+					product.brand && 
+					<div>
+						<Badge className={styles.brandBadge}>{product.brand ? product.brand.name : '-'}</Badge>
+					</div>
+				}
+				</motion.div>
+				<motion.div
+					initial={{ x: 100, opacity: 0 }}
+					animate={{ x: 0 , opacity: 1}}
+					exit={{ x: 100, opacity: 0 }}
+					transition={{easings:'easeInOut',duration:0.8,delay:0.5}}
+					key="product_name"
+				>
+					<h2>{product.name}</h2>
+				</motion.div>
+				<motion.div
+					initial={{opacity: 0 }}
+					animate={{opacity: 1}}
+					exit={{opacity: 0 }}
+					transition={{easings:'easeInOut',duration:0.8,delay:0.8}}
+					key="description"
+				>
+					<p className={styles.description}>{product.description}</p>
+				</motion.div>
+				<div className="d-flex flex-row align-items-center">
+					<motion.div
+						initial={{opacity: 0 }}
+						animate={{opacity: 1}}
+						exit={{opacity: 0 }}
+						transition={{easings:'easeInOut',duration:0.8,delay:1.2}}
+						className="d-flex flex-column my-4"
+						key="price"
+					>
+						{
+							product.discount_price >0 && 
+							<p className={`${styles.oldPrice} mr-3`}>{currencyFormatter(product.price)} MMK</p>
+						}
+						<p className={`${styles.price}`}>{currencyFormatter(product.discount_price ? product.discount_price : product.price)} MMK</p>
+					</motion.div>
+					<div>
+					<motion.button
+						initial={{opacity: 0}}
+						animate={{opacity: 1}}
+						exit={{opacity: 0 }}
+						transition={{easings:'easeInOut',duration:0.8,delay:1.6}}
+						className="btn btn-dark ml-5"
+						key="cart"
+					>
+						Add To Cart
+					</motion.button>
+					</div>
 				</div>
-			}
-			<h2>{product.name}</h2>
-			<p className={styles.description}>{product.description}</p>
-			<div className="d-flex flex-row align-items-center">
-				<div className="d-flex flex-column my-4">
-					{
-						product.discount_price >0 && 
-						<p className={`${styles.oldPrice} mr-3`}>{currencyFormatter(product.price)} MMK</p>
-					}
-					<p className={`${styles.price}`}>{currencyFormatter(product.discount_price ? product.discount_price : product.price)} MMK</p>
-				</div>
-				<div>
-					<Button className="btn-dark ml-5">Add To Cart</Button>
-				</div>
-			</div>
+			</AnimatePresence>
 			
 		</div>
 	)
@@ -78,7 +128,7 @@ const ProductDetail = () => {
 	const showReatedProduct = () => (
 		related_products.map((item,index) => {
 			return (
-				<AnimatePresence>
+				<AnimatePresence key={index}>
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
@@ -96,9 +146,11 @@ const ProductDetail = () => {
 	return (
 		<div>
 			<Layout className="container py-5 my-5 px-5">
-				<div className="py-5 my-5">
+				{
+					status.isSuccess && 
+					<div className="py-5 my-5">
 					{
-						product && 
+						product &&
 						<div className="row mt-5">
 							<div className="col-12 col-lg-5 col-md-6 d-flex align-items-center justify-content-center">
 								{showProductPhoto()}
@@ -109,7 +161,7 @@ const ProductDetail = () => {
 						</div>
 					}
 					{
-							related_products.length >0 && 
+							related_products.length > 0 && 
 							<div className="mt-5 pt-5">
 								<h4 className={styles.sectionTitle}>Reated Products</h4>
 								<div className="row">
@@ -118,6 +170,16 @@ const ProductDetail = () => {
 							</div>
 					}
 				</div>
+				}
+				{
+					status.isError &&
+					<div style={{marginTop: '36vh'}}>
+						<h2 class="font-lato text-center m-4">
+							Sorry....!!
+						</h2>
+						<h6 class="font-lato text-center">Something went wrong with this web page.</h6>
+					</div>
+				}
 			</Layout>
 		</div>
 	)

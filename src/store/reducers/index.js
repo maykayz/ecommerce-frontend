@@ -5,13 +5,14 @@ import { reducer as formReducer } from 'redux-form';
 import products from './products'
 import categories from './categories'
 import brands from './brands'
-// import product from './product'
+import cart from './cart'
 
 const allReducers = combineReducers({
 	form: formReducer,
 	products,
 	brands,
-	categories
+	categories,
+	cart
 })
 
 export default allReducers
