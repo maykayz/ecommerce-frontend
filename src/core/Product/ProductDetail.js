@@ -1,8 +1,10 @@
 import React, {useEffect} from 'react'
 import {useIsBigScreen,useIsSmallScreen} from '../../hooks/media'
-import {useDispatch,useSelector} from 'react-redux'
+import {useSelector,useDispatch} from 'react-redux'
+import {addToCart} from '../../store/actions/cart'
 import { motion, AnimatePresence } from "framer-motion"
 import {useParams} from 'react-router'
+import swal from 'sweetalert';
 
 import {
 	Badge,
@@ -55,6 +57,20 @@ const ProductDetail = () => {
 
 	const currencyFormatter = (str) => {
 		return  str ? str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '';
+	}
+
+	const addToCartHandler = (item) => (e) => {
+		e.preventDefault()
+		e.stopPropagation()
+		dispatch(addToCart(item))
+		swal({
+			text: `${item.name} has been added to cart.`,
+			icon: "success",
+			button: {
+				text: "Continue Shopping",
+				class: "btn btn-primary"
+			},
+		});
 	}
 
 	const showProductDetails = () => (
@@ -115,6 +131,7 @@ const ProductDetail = () => {
 						transition={{easings:'easeInOut',duration:0.8,delay:1.6}}
 						className="btn btn-dark ml-5"
 						key="cart"
+						onClick={addToCartHandler(product)}
 					>
 						Add To Cart
 					</motion.button>

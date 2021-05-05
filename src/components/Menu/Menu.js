@@ -32,12 +32,12 @@ const Menu = ({history}) => {
 		history.location.pathname === path ? true : false
 	)
 	const getTotalCartItem = () => {
-		let total = 0
-		if(cart_items.length > 0){
-			cart_items.forEach(item => {
-				total+= item.count
-			})
-		}
+		let total = cart_items.length
+		// if(cart_items.length > 0){
+		// 	cart_items.forEach(item => {
+		// 		total+= parseInt(item.count)
+		// 	})
+		// }
 		return total
 	}
 	const onClickLogout = () => {
@@ -78,24 +78,35 @@ const Menu = ({history}) => {
 			transition={{easings:'easeInOut', duration: 0.2}}
 			className="cart-menu"
 		>
-			<ul className="list-style-none p-3 m-0">
-				{
-					cart_items.map(item => (
-						<li>
-							<div class="d-flex flex-row align-items-center justify-content-between">
-								<div className="d-flex flex-row align-items-center">
-									<img src={item.url} alt={item.name}></img>
-									<h6 className="px-3 my-0">{item.name}</h6>
-								</div>
-								<h6 className="qty my-0">{item.count}</h6>
-							</div>
-						</li>
-					))
-				}
-			</ul>
+			{
+				cart_items.length ?
+				<ul className="list-style-none p-3 m-0">
+					{
+						cart_items.map((item,index) => (
+							<li key={index}>
+								<Link
+									to={`/products/${item._id}`}
+								>
+									<div className="d-flex flex-row align-items-center justify-content-between">
+										<div className="d-flex flex-row align-items-center">
+											<img src={item.url} alt={item.name}></img>
+											<h6 className="px-3 my-0">{item.name}</h6>
+										</div>
+										<h6 className="qty my-0">{item.count}</h6>
+									</div>
+								</Link>
+							</li>
+						))
+					}
+				</ul>: ''
+			}
 			<div className="text-center py-3">
-					<Link to="/cart" className="my-0 py-2 cursor-pointer">View My Cart</Link>
-				</div>
+				{
+					cart_items.length ?
+					<Link to="/cart" className="my-0 py-2 cursor-pointer">View My Cart</Link> : 
+					<Link to="/" className="my-0 py-2 cursor-pointer">No item in cart.</Link>
+				}
+			</div>
 		</motion.div>
 	)
 	
@@ -117,7 +128,7 @@ const Menu = ({history}) => {
 				</Navbar.Collapse>
 				<Nav className="ml-auto">
 					<Nav.Item className="nav-link"><SearchBar></SearchBar></Nav.Item>
-					<Link className="nav-link" onClick={onClickCart}>
+					<Nav.Item className="nav-link" onClick={onClickCart}>
 						<img style={{width:'20px'}} src={cart} alt="Cart Icon"></img>
 						{
 							cart_items.length > 0 &&
@@ -126,7 +137,7 @@ const Menu = ({history}) => {
 							</div>
 						}
 						{cartMenu()}
-					</Link>
+					</Nav.Item>
 					<NavDropdown
 						title={ProfileMenuTitle()}
 						active

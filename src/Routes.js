@@ -8,6 +8,7 @@ import SignUp from './user/SignUp'
 
 import Home from './core/Home'
 import Search from './core/Search'
+import Cart from './core/Cart'
 
 import UserDashboard from './user/UserDashboard'
 import ProductDetail from './core/Product/ProductDetail'
@@ -38,6 +39,7 @@ const Routes = () => {
 
 					<Route path="/" exact component={Home}></Route>
 					<Route path="/search" exact component={Search}></Route>
+					<Route path="/cart" exact component={Cart}></Route>
 					<Route path="/products/:id" exact component={ProductDetail}></Route>
 					
 					<PrivateRoute path="/user/dashboard" exact component={UserDashboard}></PrivateRoute>

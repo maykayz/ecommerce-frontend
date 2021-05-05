@@ -5,8 +5,6 @@ import {useDispatch,useSelector} from 'react-redux'
 import { useForm } from "react-hook-form";
 
 import {updateBrand,initStatus,getBrand} from '../../store/actions/brands'
-
-
 import Layout from '../../core/Layout'
 
 const BrandUpdate = ({history}) => {

@@ -1,7 +1,7 @@
 import {Badge} from 'react-bootstrap'
 import swal from 'sweetalert';
 import {withRouter} from 'react-router-dom'
-import {useSelector,useDispatch} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import {addToCart} from '../../store/actions/cart'
 import {useIsMobileScreen} from '../../hooks/media'
 import styles from './Product.module.scss'
@@ -10,7 +10,6 @@ import dummyImage from '../../assets/images/dummy.jpg'
 const Product = ({item,history}) => {
 	const isMobileScreen 	= useIsMobileScreen()
 	const dispatch 			= useDispatch()
-	const items 		= useSelector(state => state.cart ? state.cart : [])
 
 	const addToCartHandler = (item) => (e) => {
 		e.preventDefault()
@@ -24,7 +23,6 @@ const Product = ({item,history}) => {
 				class: "btn btn-primary"
 			},
 		});
-		console.log(items)
 	}
 
 	const cart = () => (

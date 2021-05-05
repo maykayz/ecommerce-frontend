@@ -47,7 +47,9 @@ font-family: 'Prata', serif;
 	padding:15px 40px;
 }
 .form-check{
-	filter:hue-rotate(-189deg);
+	input{
+		filter:hue-rotate(-189deg);
+	}
 }
 .form-control{
 	border-radius: 0px;
@@ -60,6 +62,9 @@ font-family: 'Prata', serif;
 	box-shadow:none;
 }
 
+hr{
+	border-top:1px solid rgb(242,242,242);
+}
 
 .breadcrumb{
 	background-color:#fbfbfb;
@@ -86,4 +91,47 @@ font-family: 'Prata', serif;
 		background-color: #000000;
 		border-color: #000000;
 	}
+}
+
+// cart
+.payment-card{
+	background:#fbfbfb;
+	height:100%;
+	// color:rgb(180, 180, 180);
+	border-radius:10px;
+	input{
+		// color:black;
+		background:transparent;
+		border:none;
+		border-bottom:1px solid #414141;
+	}
+	.btn-white{
+		// background:white;
+		// color:black;
+	}
+	.btn.big-btn{
+		width:100%;
+	}
+}
+.cart-item{
+	padding:10px;
+	cursor:pointer;
+	border-bottom:1px solid #f1f1f1;
+	background:#fff;
+	transition: all 0.3s ease-in-out;
+	&:hover{
+		background:rgb(250, 250, 250);
+		transition: all 0.1s ease-in-out;
+	}
+	img{
+		width:50px;
+		height:50px;
+		object-position: center;
+		object-fit: contain;
+		&.icon{
+			width:15px;
+			height:auto;
+		}
+	}
+	
 }

@@ -12,7 +12,7 @@ const cart = (state = initialState,action) => {
 	switch(action.type){
 		case GET_CART: {
 			const cart = JSON.parse(localStorage.getItem('moony_cart'))
-			const cart_items = cart.length > 0 ? cart : []
+			const cart_items = cart && cart.length > 0 ? cart : []
 			return [
 				...cart_items
 			]
@@ -38,14 +38,9 @@ const cart = (state = initialState,action) => {
 			]
 		}
 		case UPDATE_QTY: {
-			const {item} = action
-			localStorage.setItem('moony_cart',JSON.stringify([
-				...state,
-				item
-			]))
+			localStorage.setItem('moony_cart',JSON.stringify(state))
 			return [
-				...state,
-				item
+				...state
 			]
 		}
 		case REMOVE_FROM_CART: {
