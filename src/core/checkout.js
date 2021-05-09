@@ -1,15 +1,14 @@
-import React, { useEffect,useState } from 'react'
-import { useDispatch,useSelector } from 'react-redux'
+import React, {useState } from 'react'
+import { useSelector } from 'react-redux'
 import { motion,AnimatePresence } from "framer-motion"
 import { Button,FormCheck,Form,FormGroup,FormLabel,FormControl } from 'react-bootstrap'
 import braintree from 'braintree-web'
-import axios from 'axios'
 
 import visaImage from '../assets/images/master.png'
 import paypalImage from '../assets/images/paypal.png'
 import codImage from '../assets/images/COD.png'
 
-const Checkout = () => {
+const Checkout = ({onCheckoutClick}) => {
 
 	const cart_items 					= useSelector(state => state.cart ? state.cart : [])
 
@@ -20,55 +19,25 @@ const Checkout = () => {
 		expYear: '',
 		expirationDate: ''
 	})
-
-	const [payment_type,setPaymentType] = useState('master/visa')
-
-
-	const user = JSON.parse(localStorage.getItem('jwt'))
-	const user_id = user._id
-	const token = user.token
+	const [payment_type,setPaymentType] = useState('Master/Visa')
+	const [clientToken,setClientToken] 	= useState('asdfasdfa asdfasdfasd asfsdfasdfas')
+	const user 							= JSON.parse(localStorage.getItem('jwt'))
+	const user_id 						= user._id
+	const [shipping,setShipping]				= useState({
+		phone: '',
+		address: '',
+		zipcode: ''
+	})
 	
-
-	const [clientToken,setClientToken] = useState('')
-
 	const onCheckoutHandler = (e) => {
 		e.preventDefault()
 		const order = {
 			items: cart_items,
 			user: user,
-			shippingAddress: 'No.5, Block 36A, Shwe Kantharyar Housing, HTYR, YGN.'
+			payment_type: payment_type,
+			shipping: shipping
 		}
-
-		axios.post(`/orders`,order,{
-			withCredentials: true,
-			baseURL: 'http://localhost:8000/api/v1',
-			headers:{
-				  'Authorization': `Bearer ${token}`
-			  }
-		  }).then(res => {
-			console.log(res)
-		}).catch(err => {
-			console.log(err)
-		})
-
-		// axios.get(`/braintree/getClientToken/${user_id}`,{
-		// 	withCredentials: true,
-		// 	baseURL: 'http://localhost:8000/api/v1',
-		// 	headers:{
-		// 		  'Authorization': `Bearer ${token}`
-		// 	  }
-		//   }).then(res => {
-		// 	console.log(res)
-		// }).catch(err => {
-		// 	console.log(err)
-		// })
-
-		// const exp = `${values.expMonth}/${values.expYear}`
-		// e.preventDefault()
-		// setValues({
-		// 	...values,
-		// 	expirationDate: exp
-		// })
+		onCheckoutClick(order)
 		
 	}
 
@@ -83,6 +52,15 @@ const Checkout = () => {
 	const onPaymentTypeChanged = (payment_type) => (e) => {
 
 		setPaymentType(e.target.value)
+	}
+
+	const onShippingInfoChange = ({form,name}) => (e) => {
+		if(name === 'address' || name === 'phone' || name === 'zipcode'){
+			setShipping({
+				...shipping,
+				[name]: e.target.value
+			})
+		}
 	}
 
 	const showMasterVisaForm = () => (
@@ -163,21 +141,21 @@ const Checkout = () => {
 				<FormLabel htmlFor="Address">
 					Address
 				</FormLabel>
-				<textarea className="form-control" name="address">	
+				<textarea className="form-control" name="address" value={shipping.address} onChange={onShippingInfoChange({form:'COD',name:'address'})}>	
 				</textarea>
 			</FormGroup>
 			<FormGroup>
 				<FormLabel htmlFor="zipcode">
 					Zip Code
 				</FormLabel>
-				<FormControl name="zipcode" placeholder="xxxxx">	
+				<FormControl name="zipcode" placeholder="xxxxx" value={shipping.zipcode} onChange={onShippingInfoChange({form:'COD',name:'zipcode'})}>	
 				</FormControl>
 			</FormGroup>
 			<FormGroup>
 				<FormLabel htmlFor="phone">
 					Phone
 				</FormLabel>
-				<FormControl name="phone" placeholder="09 ">	
+				<FormControl name="phone" placeholder="09 " value={shipping.phone} onChange={onShippingInfoChange({form:'COD',name:'phone'})}>	
 				</FormControl>
 			</FormGroup>
 			</motion.div>
@@ -192,24 +170,24 @@ const Checkout = () => {
 				</FormLabel>
 				<Form.Group className="d-flex flex-row">
 					<FormCheck className="pr-2 d-flex flex-row align-items-center">
-						<FormCheck.Input type="radio" name="payment_type" value='master/visa' checked={payment_type === 'master/visa' ? true : false}  onChange={onPaymentTypeChanged('payment_type')}></FormCheck.Input>
+						<FormCheck.Input type="radio" name="payment_type" value='Master/Visa' checked={payment_type === 'Master/Visa' ? true : false}  onChange={onPaymentTypeChanged('payment_type')}></FormCheck.Input>
 						<FormCheck.Label><img style={{height:'60px'}} src={visaImage} alt="Visa"></img> </FormCheck.Label>
 					</FormCheck>
 					<FormCheck className="pr-2 d-flex flex-row align-items-center">
-						<FormCheck.Input type="radio" name="payment_type" value='paypal' checked={payment_type === 'paypal' ? true : false}  onChange={onPaymentTypeChanged('payment_type')}></FormCheck.Input>
+						<FormCheck.Input type="radio" name="payment_type" value='Paypal' checked={payment_type === 'Paypal' ? true : false}  onChange={onPaymentTypeChanged('payment_type')}></FormCheck.Input>
 						<FormCheck.Label><img style={{height:'60px'}} src={paypalImage} alt="Visa"></img> </FormCheck.Label>
 					</FormCheck>
 					<FormCheck className="pr-2 d-flex flex-row align-items-center">
-						<FormCheck.Input type="radio" name="payment_type" value='cod' checked={payment_type === 'cod' ? true : false}  onChange={onPaymentTypeChanged('payment_type')}></FormCheck.Input>
+						<FormCheck.Input type="radio" name="payment_type" value='COD' checked={payment_type === 'COD' ? true : false}  onChange={onPaymentTypeChanged('payment_type')}></FormCheck.Input>
 						<FormCheck.Label><img style={{height:'60px'}} src={codImage} alt="Visa"></img> </FormCheck.Label>
 					</FormCheck>
 				</Form.Group>
 			</FormGroup>
 			{
-				payment_type === 'master/visa' ?
+				payment_type === 'Master/Visa' ?
 				showMasterVisaForm() 
 				: 
-				payment_type === 'paypal' ?
+				payment_type === 'Paypal' ?
 				showPaypalForm() 
 				: 
 				showCODForm()

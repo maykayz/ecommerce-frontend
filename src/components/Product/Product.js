@@ -19,9 +19,8 @@ const Product = ({item,history}) => {
 			text: `${item.name} has been added to cart.`,
 			icon: "success",
 			button: {
-				text: "Continue Shopping",
-				class: "btn btn-primary"
-			},
+				text: "Continue Shopping"
+			}
 		});
 	}
 

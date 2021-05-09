@@ -2,7 +2,8 @@ import {
 	GET_CART,
 	ADD_TO_CART,
 	UPDATE_QTY,
-	REMOVE_FROM_CART
+	REMOVE_FROM_CART,
+	CLEAR_CART
   } from "../types/cart";
 
 const getCart = (params) => {
@@ -28,7 +29,12 @@ const removeFromCart = (item) => {
 		item
 	}
 }
+const clearCart = () => {
+	return {
+		type: CLEAR_CART
+	}
+}
 
 
 
-export {getCart,addToCart,updateQty,removeFromCart}
+export {getCart,addToCart,updateQty,removeFromCart,clearCart}

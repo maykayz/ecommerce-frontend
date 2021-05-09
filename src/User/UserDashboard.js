@@ -1,11 +1,19 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
+import { useDispatch,useSelector } from 'react-redux'
 import Layout from '../core/Layout'
 import {Link} from 'react-router-dom'
 import {Card,ListGroup} from 'react-bootstrap'
 import {isAuthenticated} from '../auth/index'
+import {getUser} from '../store/actions/user'
 
 const UserDashboard = () => {
 	const {name,email,role} = isAuthenticated();
+	const dispatch = useDispatch()
+	const user = useSelector(state => state.user ? state.user : {})
+
+	useEffect(() => {
+		dispatch(getUser())
+	}, [])
 
 	const UserInformation = () => (
 		<Card className="mb-4">
@@ -18,11 +26,11 @@ const UserDashboard = () => {
 		<Card.Body>
 			<div className="">
 				<p className="text-muted mt-3 mb-2">Name</p>
-				<h6>{name}</h6>
+				<h6>{user.name}</h6>
 				<p className="text-muted mt-3 mb-2">Email</p>
-				<h6>{email}</h6>
+				<h6>{user.email}</h6>
 				<p className="text-muted mt-3 mb-2">Role</p>
-				<h6>{role === 0 ? 'Admin' : 'Registered User'}</h6>
+				<h6>{user.role === 0 ? 'Admin' : 'Registered User'}</h6>
 			</div>
 		</Card.Body>
 	</Card>
@@ -44,12 +52,12 @@ const UserDashboard = () => {
 			</Card.Header>
 			<Card.Body>
 				<div className="">
-					<p className="text-muted mt-3 mb-2">Address</p>
-					<h6>No.5, Block 36A, Shwe Kan Tharyar, Yangon</h6>
-					<p className="text-muted mt-3 mb-2">Phone Number</p>
-					<h6>09 960 7654 60}</h6>
-					<p className="text-muted mt-3 mb-2">Zip Code</p>
-					<h6>11401</h6>
+					<p className="text-muted mt-3 mb-2">Address: </p>
+					<h6>{user.address}</h6>
+					<p className="text-muted mt-3 mb-2">Phone Number: </p>
+					<h6>{user.phone}</h6>
+					<p className="text-muted mt-3 mb-2">Zip Code: </p>
+					<h6>{user.zipcode}</h6>
 				</div>
 			</Card.Body>
 		</Card>
@@ -63,18 +71,14 @@ const UserDashboard = () => {
 			</Card.Header>
 			<Card.Body>
 				<ListGroup>
-					<ListGroup.Item className="d-flex flex-row justify-content-between">
-						<Link to="/order/123123">Order #123123</Link>
-						<label className="text-muted text-dark-50">Status: <span>Delivered</span></label>
-					</ListGroup.Item>
-					<ListGroup.Item className="d-flex flex-row justify-content-between">
-						<Link to="/order/123123">Order #123123</Link>
-						<label className="text-muted text-dark-50">Status: <span>Delivered</span></label>
-					</ListGroup.Item>
-					<ListGroup.Item className="d-flex flex-row justify-content-between">
-						<Link to="/order/123123">Order #123123</Link>
-						<label className="text-muted text-dark-50">Status: <span>Delivered</span></label>
-					</ListGroup.Item>
+					{
+						user.history && user.history.map(order => (
+							<ListGroup.Item className="d-flex flex-row justify-content-between">
+								<Link to="/order/123123">Order #{order._id}</Link>
+								<label className="text-muted text-dark-50">Status: <span>{order.status}</span></label>
+							</ListGroup.Item>
+						))
+					}
 				</ListGroup>
 			</Card.Body>
 		</Card>

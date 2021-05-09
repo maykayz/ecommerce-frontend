@@ -2,7 +2,8 @@ import {
 	GET_CART,
 	ADD_TO_CART,
 	UPDATE_QTY,
-	REMOVE_FROM_CART
+	REMOVE_FROM_CART,
+	CLEAR_CART
   } from "../types/cart";
 
 
@@ -50,6 +51,12 @@ const cart = (state = initialState,action) => {
 			]))
 			return [
 				...state.filter(product => product._id !== item._id)
+			]
+		}
+		case CLEAR_CART : {
+			localStorage.removeItem('moony_cart')
+			return [
+				...initialState
 			]
 		}
 		default: {

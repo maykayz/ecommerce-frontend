@@ -1,0 +1,12 @@
+export const GET_USER_REQUESTED 			= 'GET_USER_REQUESTED'
+export const GET_USER 						= 'GET_USER'
+export const UPDATE_USER_REQUESTED 			= 'UPDATE_USER_REQUESTED'
+export const UPDATE_USER 					= 'UPDATE_USER'
+export const GET_ORDER_HISTORY_REQUESTED 	= 'GET_ORDER_HISTORY_REQUESTED'
+export const GET_ORDER_HISTORY 				= 'GET_ORDER_HISTORY'
+export const ADD_ORDER_HISTORY 				= 'ADD_ORDER_HISTORY'
+
+export const ERROR = 'ERROR'
+export const LOADING = 'LOADING'
+export const SUCCESS = 'SUCCESS'
+export const INIT_STATUS = 'INIT_STATUS'
