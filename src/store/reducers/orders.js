@@ -1,8 +1,10 @@
 import {
 	GET_ORDERS,
+	GET_ORDER,
 	ADD_ORDER,
 	UPDATE_ORDER,
 	CANCEL_ORDER,
+	UPDATE_ORDER_STATUS,
 	ERROR,
 	LOADING,
 	INIT_STATUS
@@ -11,6 +13,7 @@ import {
 
 const initialState = {
 	orders: [],
+	order: {},
 	status: {
 		isSuccess: false,
 		isError: false,
@@ -32,8 +35,22 @@ const order = (state = initialState,action) => {
 				status: {
 					...state.status,
 					isSuccess: true,
+					loading: false
+				}
+			}
+		}
+		case GET_ORDER: {
+			const {order} = action
+			return {
+				...state,
+				order: {
+					...order
+				},
+				status: {
+					...state.status,
+					isSuccess: true,
 					loading: false,
-					successMessage: 'Order Created Successfully!'
+					successMessage: 'Order Fetch Successfully!'
 				}
 			}
 		}
@@ -54,7 +71,33 @@ const order = (state = initialState,action) => {
 		}
 		case CANCEL_ORDER: {
 			return {
-				...state
+				...state,
+				order: {
+					...state.order,
+					status: 'Cancel'
+				},
+				status: {
+					...state.status,
+					isSuccess: true,
+					loading: false,
+					successMessage: 'Order Cancelled Successfully!'
+				}
+			}
+		}
+		case UPDATE_ORDER_STATUS: {
+			const {order} = action
+			return {
+				...state,
+				orders: [
+					...state.orders,
+					[order._id] = {...order}
+				],
+				status: {
+					...state.status,
+					isSuccess: true,
+					loading: false,
+					successMessage: 'Order Status Updated Successfully!'
+				}
 			}
 		}
 		case ERROR : {

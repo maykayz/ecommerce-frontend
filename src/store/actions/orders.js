@@ -1,7 +1,10 @@
 import {
 	GET_ORDERS_REQUESTED,
 	ADD_ORDER_REQUESTED,
-	INIT_STATUS
+	GET_ORDER_REQUESTED,
+	INIT_STATUS,
+	CANCEL_ORDER_REQUESTED,
+	UPDATE_ORDER_STATUS_REQUESTED
   } from "../types/orders";
 
 const getOrders = (orders) => {
@@ -11,6 +14,26 @@ const getOrders = (orders) => {
 	}
 }
 
+const cancelOrder = (id) => {
+	return {
+		type: CANCEL_ORDER_REQUESTED,
+		id
+	}
+} 
+
+const updateOrderStatus = (order) => {
+	return {
+		type: UPDATE_ORDER_STATUS_REQUESTED,
+		order
+	}
+}
+
+const getOrder = (id) => {
+	return {
+		type: GET_ORDER_REQUESTED,
+		id
+	}
+}
 
 const addOrder = (order) => {
 	return {
@@ -26,4 +49,4 @@ const initStatus = (id) => {
 	}
 }
 
-export {getOrders, addOrder,initStatus}
+export {getOrders, addOrder, getOrder, initStatus, cancelOrder, updateOrderStatus}

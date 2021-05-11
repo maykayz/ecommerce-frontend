@@ -37,6 +37,15 @@ body {
 .heading {
 font-family: 'Prata', serif;
 }
+.heading-underlined{
+	padding-bottom:10px;
+	border-bottom: 1px solid black;
+}
+
+// BACKGROUND OVERRIDE
+.bg-light{
+	background:#fbfbfb!important;
+}
 
 .btn{
 	white-space: nowrap;
@@ -136,5 +145,26 @@ hr{
 			height:auto;
 		}
 	}
-	
+}
+
+// order detail
+.order-card{
+	background:#fbfbfb;
+	border-radius:10px;
+}
+
+// DASHOBARD TABLE
+.order-history-table{
+	font-size:14px;
+	thead{
+		th{
+			border:none!important;
+			background:rgb(248, 248, 248);
+		}
+	}
+	td{
+		border:none!important;
+		border-bottom:1px solid #ececec!important;
+		vertical-align: middle;
+	}
 }

@@ -23,10 +23,13 @@ const LogIn = ({history}) => {
 		e.preventDefault()
 		login(values.email,values.password)
 		.then(res => {
-			const {token,user} = res.data
-			authenticate({token,user},() => {
-				history.push('/')
-			})
+			console.log(res.data)
+			if(res.data){
+				const {token,user} = res.data
+				authenticate({token,user},() => {
+					history.push('/')
+				})
+			}
 		})
 		.catch(err=> {
 			setError(err)

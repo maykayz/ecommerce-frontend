@@ -24,7 +24,7 @@ import styles from './ProductDetail.module.scss'
 const ProductDetail = () => {
 
 	const {id} 				= useParams()
-	const dispatch			 = useDispatch()
+	const dispatch			= useDispatch()
 	const isBigScreen 		= useIsBigScreen()
 	const isSmallScreen 	= useIsSmallScreen()
 

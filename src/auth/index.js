@@ -27,8 +27,11 @@ export const login = (email,password) => {
 			password: password
 		}).then(res => {
 			resolve(res)
-		}).catch(error => {
-			reject(error.response.data.error)
+		}).catch((error = 'Cannot Login') => {
+			if(error.response && error.response.data){
+				return reject(error.response.data.error)
+			}
+			reject(error)
 		})
 	})
 }

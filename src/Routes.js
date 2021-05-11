@@ -11,7 +11,12 @@ import Search from './core/Search'
 import Cart from './core/Cart'
 
 import UserDashboard from './user/UserDashboard'
+import UserUpdate from './core/User/UserUpdate'
+
+
+
 import ProductDetail from './core/Product/ProductDetail'
+import OrderDetail from './core/Order/OrderDetail'
 
 
 // ADMIN ROUTES
@@ -29,6 +34,8 @@ import ProductList from './admin/product/ProductList'
 import ProductCreate from './admin/product/ProductCreate'
 import ProductUpdate from './admin/product/ProductUpdate'
 
+import OrderList from './admin/order/OrderList'
+
 const Routes = () => {
 	return(
 		<div>
@@ -43,6 +50,8 @@ const Routes = () => {
 					<Route path="/products/:id" exact component={ProductDetail}></Route>
 					
 					<PrivateRoute path="/user/dashboard" exact component={UserDashboard}></PrivateRoute>
+					<PrivateRoute path="/user/update" component={UserUpdate}></PrivateRoute>
+					<PrivateRoute path="/orders/:id" component={OrderDetail}></PrivateRoute>
 
 					{/* Admin Routes */}
 					<AdminRoute path="/admin/dashboard" exact component={AdminDashboard}></AdminRoute>
@@ -58,6 +67,8 @@ const Routes = () => {
 					<AdminRoute path="/admin/product" exact component={ProductList}></AdminRoute>
 					<AdminRoute path="/admin/product/new" exact component={ProductCreate}></AdminRoute>
 					<AdminRoute path="/admin/product/:id" exact component={ProductUpdate}></AdminRoute>
+
+					<AdminRoute path="/admin/order" exact component={OrderList}></AdminRoute>
 
 				</Switch>
 			</Router>

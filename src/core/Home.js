@@ -165,10 +165,10 @@ const Home = () => {
 		return (
 			<div>
 				<h6 className="font-bold pt-3 pb-1">Filter By Categories</h6>
-					<FormCheck className="pb-1">
+						{/* <FormCheck className="pb-1">
 							<FormCheck.Input value={'All'} checked={filters.category.indexOf('All') >= 0? true : false} onChange={onFilterChanged('category')}></FormCheck.Input>
 							<FormCheck.Label>All</FormCheck.Label>
-						</FormCheck>
+						</FormCheck> */}
 					{
 						categories.length && 
 						categories.map(item => (
@@ -187,10 +187,10 @@ const Home = () => {
 		return (
 			<div>
 				<h6 className="font-bold pt-5 pb-1">Filter By Brands</h6>
-					<FormCheck className="pb-1">
+					{/* <FormCheck className="pb-1">
 						<FormCheck.Input value={'All'} checked={filters.brand.indexOf('All') >= 0? true : false}  onChange={onFilterChanged('brand')}></FormCheck.Input>
 						<FormCheck.Label>All</FormCheck.Label>
-					</FormCheck>
+					</FormCheck> */}
 					{
 						brands.length && 
 						brands.map(item => (

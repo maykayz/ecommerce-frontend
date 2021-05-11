@@ -2,12 +2,22 @@ import {
 	GET_USER,
 	UPDATE_USER,
 	GET_ORDER_HISTORY,
-	ADD_ORDER_HISTORY	
+	ADD_ORDER_HISTORY,
+	ERROR,
+	SUCCESS
 } from '../types/user'
 
 
 const initialState = {
-	user: {}
+	user: {
+		status: {
+			isSuccess: false,
+			isError: false,
+			loading:false,
+			successMessage: '',
+			errorMessage: ''
+		}
+	}
 }
 
 const  user = (state = initialState,action) => {
@@ -21,7 +31,14 @@ const  user = (state = initialState,action) => {
 		case UPDATE_USER: {
 			const {user} = action
 			return {
-				...user
+				...user,
+				status: {
+					isSuccess: true,
+					isError: false,
+					loading:false,
+					successMessage: 'User Updated Successfully.',
+					errorMessage: ''
+				}
 			}
 		}
 		case GET_ORDER_HISTORY: {

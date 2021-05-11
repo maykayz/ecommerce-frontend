@@ -1,5 +1,6 @@
 import {
-	GET_USER_REQUESTED
+	GET_USER_REQUESTED,
+	UPDATE_USER_REQUESTED
   } from "../types/user";
 
 const getUser = () => {
@@ -8,4 +9,11 @@ const getUser = () => {
 	}
 }
 
-export {getUser}
+const updateUser = (user) => {
+	return {
+		type: UPDATE_USER_REQUESTED,
+		user: user
+	}
+}
+
+export {getUser,updateUser}

@@ -20,3 +20,13 @@ export const getUser = (id) => {
 		})
 	})
 }
+
+export const updateUser = (payload) => {
+	return new Promise((resolve,reject) => {
+		$axios.put(`${API_URL}/users/${payload._id}`,payload).then(res => {
+			resolve(res)
+		}).catch(error => {
+			reject(error)
+		})
+	})
+}

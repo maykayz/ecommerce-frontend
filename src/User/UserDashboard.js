@@ -1,27 +1,36 @@
-import React,{useState,useEffect} from 'react'
+import React,{useEffect} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
-import Layout from '../core/Layout'
 import {Link} from 'react-router-dom'
-import {Card,ListGroup,Table} from 'react-bootstrap'
-import {isAuthenticated} from '../auth/index'
-import {getUser} from '../store/actions/user'
+import {Table} from 'react-bootstrap'
 import moment from 'moment'
-import styles from './UserDashboard.module.scss'
+import Layout from '../core/Layout'
+import {getUser} from '../store/actions/user'
+import { currencyFormatter } from '../helpers'
 
 const UserDashboard = () => {
-	const {name,email,role} = isAuthenticated();
 	const dispatch = useDispatch()
 	const user = useSelector(state => state.user ? state.user : {})
+
+	const breadcrumbs = [
+		{
+			to: '/',
+			title: 'Home',
+		},
+		{
+			to: '/user/dashboard',
+			title: 'Dashboard',
+		},
+	]
 
 	useEffect(() => {
 		dispatch(getUser())
 	}, [])
 
 	const UserInformation = () => (
-		<div className={`mb-4 p-4 rounded ${styles.leftPanel}`}>
-			<div className={`d-flex flex-row justify-content-between align-items-center ${styles.headingUnderline}`}>
-				<h5>User Profile</h5>
-				<Link to="/profile/update">Edit</Link>
+		<div className="mb-4 p-4 rounded bg-light">
+			<div className='d-flex flex-row justify-content-between align-items-center heading-underlined'>
+				<h5>User Information</h5>
+				<Link to="/user/update">Edit</Link>
 			</div>
 			<div className="">
 				<p className="text-muted mt-3 mb-2">Name</p>
@@ -30,36 +39,36 @@ const UserDashboard = () => {
 				<h6>{user.email}</h6>
 				<p className="text-muted mt-3 mb-2">Role</p>
 				<h6>{user.role === 0 ? 'Admin' : 'Registered User'}</h6>
+				<hr></hr>
+				<p className="text-muted mt-3 mb-2">Address: </p>
+				<h6>{ user.contact_info && user.contact_info.address ? user.contact_info.address : '-'}</h6>
+				<p className="text-muted mt-3 mb-2">Phone Number: </p>
+				<h6>{ user.contact_info && user.contact_info.phone ? user.contact_info.phone : '-'}</h6>
+				<p className="text-muted mt-3 mb-2">Zip Code: </p>
+				<h6>{ user.contact_info && user.contact_info.zipcode ? user.contact_info.zipcode : '-'}</h6>
 			</div>
 		</div>
 	)
 	const UserLinks = () => (	
-		<div className={`mb-4 p-4 rounded ${styles.leftPanel}`}>
+		<div className="mb-4 p-4 rounded bg-light">
 			<div className="">
 				<Link to="/cart">View My Cart</Link>
 			</div>
 		</div>	
 	)
 	const BillingInformation = () => (
-		<div className={`mb-4 p-4 rounded ${styles.leftPanel}`}>
-			<div className={`d-flex flex-row justify-content-between align-items-center ${styles.headingUnderline}`}>
+		<div className="mb-4 p-4 rounded bg-light">
+			<div className='d-flex flex-row justify-content-between align-items-center heading-underlined'>
 				<h5>Billing Information</h5>
-				<Link to="/profile/billing">Edit</Link>
 			</div>
-			<p className="text-muted mt-3 mb-2">Address: </p>
-			<h6>{user.address ? user.address : '-'}</h6>
-			<p className="text-muted mt-3 mb-2">Phone Number: </p>
-			<h6>{user.phone ? user.phone : '-'}</h6>
-			<p className="text-muted mt-3 mb-2">Zip Code: </p>
-			<h6>{user.zipcode ? user.zipcode : '-'}</h6>
 		</div>
 	)
 	const PurchaseHistory = () => (
 		<div className="mb-4 p-4 shadow-1">
-				<div className={`d-flex flex-row justify-content-between align-items-center mb-4 ${styles.headingUnderline}`}>
+				<div className='d-flex flex-row justify-content-between align-items-center mb-4 heading-underlined'>
 					<h5>Recent Orders</h5>
 				</div>
-			<Table hover className={styles.orderHistoryTable}>
+			<Table hover className="order-history-table">
 				<thead>
 					<tr>
 					<th>Order</th>
@@ -70,18 +79,20 @@ const UserDashboard = () => {
 				</thead>
 				<tbody>
 					{
-						user.history && user.history.map(order => (
+						user.history && user.history.length ? user.history.map(order => (
 							<tr>
 								<td>
-									<Link to={`/user/orders/${order._id}`}>
+									<Link to={`/orders/${order._id}`}>
 										{order._id}
 									</Link>
 								</td>
 								<td>{moment(order.createdAt).format("DD/MM/YYYY")}</td>
-								<td>{order.total}</td>
+								<td>{currencyFormatter(order.total)} MMK</td>
 								<td>{order.status}</td>
 							</tr>
 						))
+						: 
+						<p className="m-3">No record found.</p>
 					}
 				</tbody>
 			</Table>
@@ -89,11 +100,11 @@ const UserDashboard = () => {
 	)
 	return(
 		<div>
-			<Layout className="container py-5 my-5">
+			<Layout breadcrumbs={breadcrumbs} className="container">
 				<div className="row mt-5">
 					<div className='col-12 col-md-4'>
 						{UserInformation()}
-						{BillingInformation()}
+						{/* {BillingInformation()} */}
 						{UserLinks()}
 					</div>
 					<div className="col-12 col-md-8">
