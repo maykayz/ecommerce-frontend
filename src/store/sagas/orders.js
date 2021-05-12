@@ -21,8 +21,10 @@ import {
 } from "../types/cart";
 
 function* getOrdersRequested(action){
+	const {filters} = action
 	try{
-		const res = yield call(getOrders)
+		const res = yield call(getOrders,filters)
+		console.log(res.data.data)
 		if(res){
 			yield put({
 				type: GET_ORDERS,
@@ -35,7 +37,6 @@ function* getOrdersRequested(action){
 		if(e.response && e.response.data){
 			errorMessage = e.response.data.error
 		}
-		
 		yield put({
 			type: ERROR,
 			status: {

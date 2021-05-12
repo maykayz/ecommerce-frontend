@@ -135,7 +135,7 @@ const Cart = ({history}) => {
 					cart_items.length ?
 					<div>
 						{showCartItems()}
-						<div class="d-flex flex-row justify-content-end mt-4 mb-2">
+						<div className="d-flex flex-row justify-content-end mt-4 mb-2">
 							<div className="col-2">
 								<h6 className="font-bold">Subtotal:</h6>
 							</div>
@@ -143,7 +143,7 @@ const Cart = ({history}) => {
 								<h6 className="text-right">{currencyFormatter(getSubtotal())} MMK</h6>
 							</div>
 						</div>
-						<div class="d-flex flex-row justify-content-end mb-2">
+						<div className="d-flex flex-row justify-content-end mb-2">
 							<div className="col-2">
 								<h6 className="font-bold">Shipping:</h6>
 							</div>
@@ -151,7 +151,7 @@ const Cart = ({history}) => {
 								<h6 className="text-right">{shipping_charges} MMK</h6>
 							</div>
 						</div>
-						<div class="d-flex flex-row justify-content-end mb-2">
+						<div className="d-flex flex-row justify-content-end mb-2">
 							<div className="col-2">
 								<h6 className="font-bold">Discount:</h6>
 							</div>
@@ -160,7 +160,7 @@ const Cart = ({history}) => {
 							</div>
 						</div>
 						<hr></hr>
-						<div class="d-flex flex-row justify-content-end mb-4 align-items-center">
+						<div className="d-flex flex-row justify-content-end mb-4 align-items-center">
 							<div className="col-6">
 								<Link to="/" variant="outline-primary" className="btn btn-outline-primary big-btn mr-2">Continue Shopping...</Link>
 							</div>

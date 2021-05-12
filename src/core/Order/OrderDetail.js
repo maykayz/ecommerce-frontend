@@ -70,7 +70,7 @@ const OrderDetail = () => {
 	const showAmount = () => {
 		return(
 			<div className="mt-4">
-				<div class="d-flex flex-row justify-content-end mt-4 mb-2">
+				<div className="d-flex flex-row justify-content-end mt-4 mb-2">
 					<div className="col-2">
 						<h6 className="font-bold">Subtotal:</h6>
 					</div>
@@ -78,7 +78,7 @@ const OrderDetail = () => {
 						<h6 className="text-right">{currencyFormatter(order.subtotal)} MMK</h6>
 					</div>
 				</div>
-				<div class="d-flex flex-row justify-content-end mb-2">
+				<div className="d-flex flex-row justify-content-end mb-2">
 					<div className="col-2">
 						<h6 className="font-bold">Shipping:</h6>
 					</div>
@@ -86,7 +86,7 @@ const OrderDetail = () => {
 						<h6 className="text-right">{order.shipping_charges ? order.shipping_charges : 0} MMK</h6>
 					</div>
 				</div>
-				<div class="d-flex flex-row justify-content-end mb-2">
+				<div className="d-flex flex-row justify-content-end mb-2">
 					<div className="col-2">
 						<h6 className="font-bold">Discount:</h6>
 					</div>
@@ -95,7 +95,7 @@ const OrderDetail = () => {
 					</div>
 				</div>
 				<hr></hr>
-				<div class="d-flex flex-row justify-content-end mb-4 align-items-center">
+				<div className="d-flex flex-row justify-content-end mb-4 align-items-center">
 					<div className="col-2">
 						<h6 className="font-bold">Total:</h6>
 					</div>

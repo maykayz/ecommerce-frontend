@@ -7,10 +7,10 @@ import {
 	UPDATE_ORDER_STATUS_REQUESTED
   } from "../types/orders";
 
-const getOrders = (orders) => {
+const getOrders = (filters) => {
 	return {
 		type: GET_ORDERS_REQUESTED,
-		orders
+		filters
 	}
 }
 

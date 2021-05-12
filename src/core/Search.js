@@ -81,7 +81,7 @@ const Search = () => {
 								</div>
 							):
 							(
-								<div class="px-3">No product found for <span className="font-bold">{keyword}.</span></div>
+								<div className="px-3">No product found for <span className="font-bold">{keyword}.</span></div>
 							)
 						}
 						{

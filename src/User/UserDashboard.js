@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import {Link} from 'react-router-dom'
-import {Table} from 'react-bootstrap'
+import {Table,Badge} from 'react-bootstrap'
 import moment from 'moment'
 import Layout from '../core/Layout'
 import {getUser} from '../store/actions/user'
@@ -88,7 +88,14 @@ const UserDashboard = () => {
 								</td>
 								<td>{moment(order.createdAt).format("DD/MM/YYYY")}</td>
 								<td>{currencyFormatter(order.total)} MMK</td>
-								<td>{order.status}</td>
+								<td>
+									<Badge 
+										variant={order.status === 'Cancel' ? 'danger': order.status === 'Delivered'?'success':'primary'}
+										className="rounded px-2 py-2"
+									>
+										{order.status}
+									</Badge>
+								</td>
 							</tr>
 						))
 						: 

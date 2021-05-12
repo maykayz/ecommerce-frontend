@@ -118,13 +118,13 @@ const Menu = ({history}) => {
 				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
-					<Nav className="mx-auto">
+					{/* <Nav className="mx-auto">
 						<Link className={`nav-link font-prata text-dark mx-3 ${isActive('/') ? 'active': ''}`} to="/">Home</Link>
 						<Link className={`nav-link font-prata text-dark mx-3 ${isActive('/products/new') ? 'active': ''}`} to="/products/new">New</Link>
 						<Link className={`nav-link font-prata text-dark mx-3 ${isActive('/products/men') ? 'active': ''}`} to="/products/men">Men</Link>
 						<Link className={`nav-link font-prata text-dark mx-3 ${isActive('/products/women') ? 'active': ''}`} to="/products/women">Women</Link>
 						<Link className={`nav-link font-prata text-dark mx-3 ${isActive('/products/kids') ? 'active': ''}`} to="/products/kids">Kids</Link>
-					</Nav>
+					</Nav> */}
 				</Navbar.Collapse>
 				<Nav className="ml-auto">
 					<Nav.Item className="nav-link"><SearchBar></SearchBar></Nav.Item>

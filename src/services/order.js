@@ -11,9 +11,14 @@ const $axios = axios.create({
 	}
 })
 
-export const getOrders = () => {
+export const getOrders = (filters) => {
+	const status = filters.status ? filters.status : ''
+	const start_date = filters.start_date ? filters.start_date : ''
+	const end_date = filters.end_date ? filters.end_date : ''
+	const min = filters.min ? filters.min : ''
+	const max = filters.max ? filters.max : ''
 	return new Promise((resolve,reject) => {
-		$axios.get(`${API_URL}/orders`).then(res => {
+		$axios.get(`${API_URL}/orders?status=${status}&start_date=${start_date}&end_date=${end_date}&min=${min}&max=${max}`).then(res => {
 			resolve(res)
 		}).catch(error => {
 			reject(error)

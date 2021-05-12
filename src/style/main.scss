@@ -7,6 +7,7 @@ $theme-colors: (
 
 @import "~bootstrap/scss/bootstrap";
 @import './fonts.scss';
+@import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 
 
 
@@ -52,6 +53,10 @@ font-family: 'Prata', serif;
 }
 .swal-button{
 	background: var(--primary)!important;
+}
+.swal-button--cancel{
+	background: white!important;
+	border: 1px solid var(--primary)!important;
 }
 
 .btn.big-btn{
@@ -168,3 +173,6 @@ hr{
 		vertical-align: middle;
 	}
 }
+
+
+// date picker

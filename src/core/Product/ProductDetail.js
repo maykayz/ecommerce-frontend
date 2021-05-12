@@ -191,10 +191,10 @@ const ProductDetail = () => {
 				{
 					status.isError &&
 					<div style={{marginTop: '36vh'}}>
-						<h2 class="font-lato text-center m-4">
+						<h2 className="font-lato text-center m-4">
 							Sorry....!!
 						</h2>
-						<h6 class="font-lato text-center">Something went wrong with this web page.</h6>
+						<h6 className="font-lato text-center">Something went wrong with this web page.</h6>
 					</div>
 				}
 			</Layout>
