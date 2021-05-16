@@ -52,14 +52,14 @@ const Menu = ({history}) => {
 
 	const showUserName = () => (
 		isAuthenticated() ? 
-		<NavDropdown.Item className="py-2 nav-link" href={isAuthenticated().role === 0 ? "/admin/dashboard" : "/user/dashboard"}>
+		<NavDropdown.Item className="py-2 px-3 nav-link" href={isAuthenticated().role === 0 ? "/admin/dashboard" : "/user/dashboard"}>
 			<img style={{width:'15px'}} src={userIcon} alt="User Icon"></img><span className="pl-1">{name}</span>
 		</NavDropdown.Item> 
 		: ''
 	)
 	const showSignInButton = () => (
 		isAuthenticated() ? 
-		<NavDropdown.Item className="py-2 nav-link text-dark" onClick={onClickLogout}>
+		<NavDropdown.Item className="py-2 px-3 nav-link text-dark" onClick={onClickLogout}>
 			<img style={{width:'15px'}} src={logoutIcon} alt="User Icon"></img><span className="pl-1">Log Out</span>
 		</NavDropdown.Item>
 			: 
@@ -116,19 +116,19 @@ const Menu = ({history}) => {
 				<Navbar.Brand href="/">
 					<Logo></Logo>
 				</Navbar.Brand>
-				<Navbar.Toggle aria-controls="basic-navbar-nav" />
-				<Navbar.Collapse id="basic-navbar-nav">
-					{/* <Nav className="mx-auto">
+				{/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
+				{/* <Navbar.Collapse id="basic-navbar-nav">
+					<Nav className="mx-auto">
 						<Link className={`nav-link font-prata text-dark mx-3 ${isActive('/') ? 'active': ''}`} to="/">Home</Link>
 						<Link className={`nav-link font-prata text-dark mx-3 ${isActive('/products/new') ? 'active': ''}`} to="/products/new">New</Link>
 						<Link className={`nav-link font-prata text-dark mx-3 ${isActive('/products/men') ? 'active': ''}`} to="/products/men">Men</Link>
 						<Link className={`nav-link font-prata text-dark mx-3 ${isActive('/products/women') ? 'active': ''}`} to="/products/women">Women</Link>
 						<Link className={`nav-link font-prata text-dark mx-3 ${isActive('/products/kids') ? 'active': ''}`} to="/products/kids">Kids</Link>
-					</Nav> */}
-				</Navbar.Collapse>
-				<Nav className="ml-auto">
-					<Nav.Item className="nav-link"><SearchBar></SearchBar></Nav.Item>
-					<Nav.Item className="nav-link" onClick={onClickCart}>
+					</Nav>
+				</Navbar.Collapse> */}
+				<Nav className="ml-auto d-flex flex-row">
+					<Nav.Item className="nav-link mx-2"><SearchBar></SearchBar></Nav.Item>
+					<Nav.Item className="nav-link mx-2" onClick={onClickCart}>
 						<img style={{width:'20px'}} src={cart} alt="Cart Icon"></img>
 						{
 							cart_items.length > 0 &&
@@ -139,6 +139,7 @@ const Menu = ({history}) => {
 						{cartMenu()}
 					</Nav.Item>
 					<NavDropdown
+						className="mx-2"
 						title={ProfileMenuTitle()}
 						active
 						alignRight={true}

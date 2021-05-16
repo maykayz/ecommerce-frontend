@@ -1,30 +1,30 @@
-import React, { useEffect } from 'react'
-import { useDispatch,useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { motion,AnimatePresence } from "framer-motion"
-import { Button,Form,FormGroup } from 'react-bootstrap'
-import { useForm } from "react-hook-form";
+import React, {useEffect} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {Link} from 'react-router-dom'
+import {motion, AnimatePresence} from "framer-motion"
+import {Button, Form, FormGroup} from 'react-bootstrap'
+import {useForm} from "react-hook-form";
 import swal from 'sweetalert'
 
-import {getCart,updateQty,removeFromCart,clearCart} from '../store/actions/cart'
+import {getCart, updateQty, removeFromCart, clearCart} from '../store/actions/cart'
 import {addOrder} from '../store/actions/orders'
-import { currencyFormatter } from '../helpers'
+import {currencyFormatter} from '../helpers'
 import Layout from './Layout'
 import Checkout from './Checkout'
 import deleteIcon from '../assets/images/delete.svg'
 
 const Cart = ({history}) => {
 
-	const dispatch 						= useDispatch()
-	const cart_items 					= useSelector(state => state.cart ? state.cart : [])
-	const {isError} 	= useSelector(state => state.orders ? state.orders : [])
-	const { register, handleSubmit } 	= useForm();
-	const shipping_charges				= 0
-	const discount 						= 0
-	
+	const dispatch = useDispatch()
+	const cart_items = useSelector(state => state.cart ? state.cart : [])
+	const {isError} = useSelector(state => state.orders ? state.orders : [])
+	const {register, handleSubmit} = useForm();
+	const shipping_charges = 0
+	const discount = 0
+
 	useEffect(() => {
 		dispatch(getCart())
-	},[])
+	}, [])
 
 	const onCartUpdateHandler = (item) => (e) => {
 		item.count = parseInt(e.target.value)
@@ -37,7 +37,7 @@ const Cart = ({history}) => {
 
 	const getSubtotal = () => {
 		let subtotal = 0
-		cart_items.forEach(item => subtotal += (item.discount_price? item.discount_price : item.price * item.count))
+		cart_items.forEach(item => subtotal += (item.discount_price ? item.discount_price : item.price * item.count))
 		return subtotal
 	}
 	const getTotal = () => {
@@ -55,8 +55,8 @@ const Cart = ({history}) => {
 			dispatch(addOrder(order))
 			resolve()
 		})
-		if(finish){
-			if(!isError){
+		if (finish) {
+			if (!isError) {
 				swal({
 					text: `Order Created Successfully`,
 					icon: "success",
@@ -67,7 +67,7 @@ const Cart = ({history}) => {
 					dispatch(clearCart())
 					history.push('/')
 				})
-			}else{
+			} else {
 				swal({
 					text: `Error Creating Order`,
 					icon: "error",
@@ -80,15 +80,15 @@ const Cart = ({history}) => {
 	}
 
 	const showCartItems = () => (
-		cart_items.map((item,index) => (
+		cart_items.map((item, index) => (
 			<AnimatePresence key={index}>
 				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-					transition={{easings:'easeOut'}}
-					className="cart-item d-flex flex-row align-items-center justify-content-between py-2" 
-					
+					initial={{opacity: 0}}
+					animate={{opacity: 1}}
+					exit={{opacity: 0}}
+					transition={{easings: 'easeOut'}}
+					className="cart-item d-flex flex-row align-items-center justify-content-between py-2"
+
 				>
 					<div className="col-5">
 						<div className="d-flex flex-row align-items-center">
@@ -103,14 +103,14 @@ const Cart = ({history}) => {
 					<div className="col-2">
 						<Form key={index}>
 							<FormGroup className="d-flex flex-row my-0 align-items-center">
-								<input  
+								<input
 									className="form-control my-0"
-									style={{width:'60px'}}
+									style={{width: '60px'}}
 									type="number"
 									defaultValue={item.count ? item.count : 0}
-									{...register(`count${index}`)}	
+									{...register(`count${index}`)}
 									onBlur={onCartUpdateHandler(item)}
-								>	
+								>
 								</input>
 							</FormGroup>
 						</Form>
@@ -134,48 +134,53 @@ const Cart = ({history}) => {
 			<div className="pb-4">
 				{
 					cart_items.length ?
-					<div>
-						{showCartItems()}
-						<div className="d-flex flex-row justify-content-end mt-4 mb-2">
-							<div className="col-2">
-								<h6 className="font-bold">Subtotal:</h6>
+						<div>
+							{showCartItems()}
+							<div className="d-flex flex-row justify-content-end mt-4 mb-2">
+								<div className="col-2">
+									<h6 className="font-bold">Subtotal:</h6>
+								</div>
+								<div className="col-4">
+									<h6 className="text-right">{currencyFormatter(getSubtotal())} MMK</h6>
+								</div>
 							</div>
-							<div className="col-4">
-								<h6 className="text-right">{currencyFormatter(getSubtotal())} MMK</h6>
+							<div className="d-flex flex-row justify-content-end mb-2">
+								<div className="col-2">
+									<h6 className="font-bold">Shipping:</h6>
+								</div>
+								<div className="col-4">
+									<h6 className="text-right">{shipping_charges} MMK</h6>
+								</div>
 							</div>
+							<div className="d-flex flex-row justify-content-end mb-2">
+								<div className="col-2">
+									<h6 className="font-bold">Discount:</h6>
+								</div>
+								<div className="col-4">
+									<h6 className="text-right">{discount} MMK</h6>
+								</div>
+							</div>
+							<hr></hr>
+							<div className="d-flex flex-row justify-content-end mb-4 align-items-center">
+								<div className="col-6">
+									<Link to="/" variant="outline-primary" className="btn btn-outline-primary big-btn mr-2 d-none d-md-block">Continue Shopping...</Link>
+								</div>
+								<div className="col-2">
+									<h6 className="font-bold">Total:</h6>
+								</div>
+								<div className="col-4">
+									<h6 className="text-right">{currencyFormatter(getTotal())} MMK</h6>
+								</div>
+							</div>
+							<div className="row">
+								<div className="col-12 d-block d-md-none">
+									<Link to="/" variant="outline-primary" className="w-100 btn btn-outline-primary big-btn">Continue Shopping...</Link>
+								</div>
+							</div>
+						</div> :
+						<div>
+							<Link to="/" variant="outline-primary" className="btn btn-outline-primary big-btn mr-2">Continue Shopping...</Link>
 						</div>
-						<div className="d-flex flex-row justify-content-end mb-2">
-							<div className="col-2">
-								<h6 className="font-bold">Shipping:</h6>
-							</div>
-							<div className="col-4">
-								<h6 className="text-right">{shipping_charges} MMK</h6>
-							</div>
-						</div>
-						<div className="d-flex flex-row justify-content-end mb-2">
-							<div className="col-2">
-								<h6 className="font-bold">Discount:</h6>
-							</div>
-							<div className="col-4">
-								<h6 className="text-right">{discount} MMK</h6>
-							</div>
-						</div>
-						<hr></hr>
-						<div className="d-flex flex-row justify-content-end mb-4 align-items-center">
-							<div className="col-6">
-								<Link to="/" variant="outline-primary" className="btn btn-outline-primary big-btn mr-2">Continue Shopping...</Link>
-							</div>
-							<div className="col-2">
-								<h6 className="font-bold">Total:</h6>
-							</div>
-							<div className="col-4">
-								<h6 className="text-right">{currencyFormatter(getTotal())} MMK</h6>
-							</div>
-						</div>
-					</div> : 
-					<div>
-						<Link to="/" variant="outline-primary" className="btn btn-outline-primary big-btn mr-2">Continue Shopping...</Link>
-					</div>
 				}
 			</div>
 		</div>
