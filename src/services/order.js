@@ -17,8 +17,9 @@ export const getOrders = (filters) => {
 	const end_date = filters.end_date ? filters.end_date : ''
 	const min = filters.min ? filters.min : ''
 	const max = filters.max ? filters.max : ''
+	const currentPage = filters.currentPage ? filters.currentPage : 1
 	return new Promise((resolve,reject) => {
-		$axios.get(`${API_URL}/orders?status=${status}&start_date=${start_date}&end_date=${end_date}&min=${min}&max=${max}`).then(res => {
+		$axios.get(`${API_URL}/orders?currentPage=${currentPage}&status=${status}&start_date=${start_date}&end_date=${end_date}&min=${min}&max=${max}`).then(res => {
 			resolve(res)
 		}).catch(error => {
 			reject(error)

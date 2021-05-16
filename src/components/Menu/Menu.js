@@ -113,7 +113,7 @@ const Menu = ({history}) => {
 	return (
 		<div>
 			<Navbar bg="white" fixed="top" expand="lg" className="d-flex flex-row justify-content-between py-4">
-				<Navbar.Brand to="/">
+				<Navbar.Brand href="/">
 					<Logo></Logo>
 				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />

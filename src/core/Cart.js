@@ -6,7 +6,7 @@ import { Button,Form,FormGroup } from 'react-bootstrap'
 import { useForm } from "react-hook-form";
 import swal from 'sweetalert'
 
-import {getCart,updateQty,removeFromCart} from '../store/actions/cart'
+import {getCart,updateQty,removeFromCart,clearCart} from '../store/actions/cart'
 import {addOrder} from '../store/actions/orders'
 import { currencyFormatter } from '../helpers'
 import Layout from './Layout'
@@ -64,6 +64,7 @@ const Cart = ({history}) => {
 						text: "Continue Shopping"
 					}
 				}).then((result) => {
+					dispatch(clearCart())
 					history.push('/')
 				})
 			}else{

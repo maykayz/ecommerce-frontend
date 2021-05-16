@@ -9,12 +9,25 @@ import Calender from 'react-modern-calendar-datepicker';
 import { currencyFormatter } from '../../helpers'
 import {getOrders,cancelOrder,updateOrderStatus} from '../../store/actions/orders'
 import Layout from '../../core/Layout'
+import Pagination from '../../components/Pagination/Pagination'
 
 const OrderList = ({history}) => {
 
-	const dispatch = useDispatch()
-	const orders = useSelector(state => state.orders.orders ? state.orders.orders : [])
-
+	const dispatch 	= useDispatch()
+	const orders 	= useSelector(state => state.orders.orders ? state.orders.orders : [])
+	const total 	= useSelector(state => state.orders.total ? state.orders.total : 0)
+	const total_page 	= useSelector(state => state.orders.total_page ? state.orders.total_page : 0)
+	const limit 	= useSelector(state => state.orders.limit ? state.orders.limit : 10)
+	const current_page 	= useSelector(state => state.orders.current_page ? state.orders.current_page : 1)
+	const [currentPage,setCurrentPage] = useState(1)
+	const initFilter = {
+		status: '',
+		start_date: '',
+		end_date: '',
+		min: '',
+		max: '',
+		currentPage: 1
+	}
 
 	const status = [
 		{
@@ -44,13 +57,7 @@ const OrderList = ({history}) => {
 
 	const [isModalOpen,setIsModalOpen] = useState(false)
 	const [editOrder,setEditOrder] = useState({})
-	const [filters,setFilters] = useState({
-		status: '',
-		start_date: '',
-		end_date: '',
-		min: null,
-		max: null
-	})
+	const [filters,setFilters] = useState(initFilter)
 	const [selectedDayRange, setSelectedDayRange] = useState({
 		from: '',
 		to: ''
@@ -82,6 +89,13 @@ const OrderList = ({history}) => {
 			...filters,
 			[name]: e.target.value
 		})
+	}
+	const clearFilter = (e) => {
+		e.preventDefault()
+		setFilters({
+			...initFilter
+		})
+		dispatch(getOrders({}))
 	}
 	const onFilterSubmit = (e) => {
 		e.preventDefault()
@@ -121,13 +135,12 @@ const OrderList = ({history}) => {
 		});
 	}
 
-	// const showSuccessAlert = () => (
-	// 	<Alert variant="success" dismissible="true" show={status.isSuccess && status.successMessage ? true: false}>{status.successMessage}
-	// 	</Alert>
-	// )
-	// const showErrorAlert = () => (
-	// 	<Alert variant="danger" dismissible="true" show={status.isSuccess === false && status.errorMessage ? true: false}>{status.errorMessage}</Alert>
-	// )
+	const onPaginationChanged = (item) => (e) => {
+		dispatch(getOrders({
+			...filters,
+			currentPage: item
+		}))
+	}
 
 	const showChangeStatusModal = () => {
 		const getIndex = () => {
@@ -168,10 +181,10 @@ const OrderList = ({history}) => {
 		<Form onSubmit={onFilterSubmit}>
 			<div className="row align-items-end">
 				<FormGroup className="col-12 col-md-3 col-sm-6 mb-2">
-					<FormLabel id="name">
+					<FormLabel>
 						Status
 					</FormLabel>
-					<Form.Control 
+					<Form.Control
 						name="status"
 						as="select" 
 						className="form-control"
@@ -181,15 +194,15 @@ const OrderList = ({history}) => {
 					>
 						<option value="">All</option>
 						{
-							status.map(item => (
-								<option value={item.title}>{item.title}</option>
+							status.map((item,index) => (
+								<option value={item.title} key={index}>{item.title}</option>
 							))
 						}
 						<option value="Cancel">Cancel</option>
 					</Form.Control>
 				</FormGroup>
 				<FormGroup className="col-12 col-md-3 col-sm-6 mb-2 d-flex flex-column">
-					<FormLabel id="name">
+					<FormLabel id="date_range">
 						Date Range
 					</FormLabel>
 					<Calender
@@ -205,11 +218,11 @@ const OrderList = ({history}) => {
 					<FormLabel id="name">
 						Min
 					</FormLabel>
-					<FormControl name="name" value={filters.min} onChange={onFilterChange('min')}>	
+					<FormControl name="min_value" value={filters.min} onChange={onFilterChange('min')}>	
 					</FormControl>
 				</FormGroup>
 				<FormGroup className="col-12 col-md-3 col-sm-6 mb-2">
-					<FormLabel id="name">
+					<FormLabel id="max_value">
 						Max
 					</FormLabel>
 					<FormControl name="name" value={filters.max} onChange={onFilterChange('max')}>	
@@ -218,25 +231,32 @@ const OrderList = ({history}) => {
 				<FormGroup className="col-12 col-md-3 col-sm-6 my-2">
 					<Button style={{height:'46px',width:'100%'}} variant="primary" type="submit">Search</Button>
 				</FormGroup>
+				<FormGroup className="col-12 col-md-3 col-sm-6 my-2">
+					<Button style={{height:'46px',width:'100%'}} variant="outline-primary" onClick={clearFilter}>Clear Filter</Button>
+				</FormGroup>
 			</div>
 		</Form>
 	)
+
+
 	const showOrderList = () => (
 		<div className="my-5">
+			<p className="text-secondary">Showing {orders.length} records of total {total} records.</p>
 			<Table hover className="order-history-table">
 				<thead>
 					<tr>
 						<th>Order</th>
 						<th>Placed On</th>
 						<th>Total</th>
+						<th>Phone</th>
 						<th>Status</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 					{
-						orders.length ? orders.map(order => (
-							<tr>
+						orders.length ? orders.map((order,index) => (
+							<tr key={index}>
 								<td>
 									<Link to={`/orders/${order._id}`}>
 										{order._id}
@@ -244,9 +264,10 @@ const OrderList = ({history}) => {
 								</td>
 								<td>{moment(order.createdAt).format("MM/DD/YYYY")}</td>
 								<td>{currencyFormatter(order.total)} MMK</td>
+								<td>{order.user && order.user.contact_info && order.user.contact_info.phone ? order.user.contact_info.phone : '-'}</td>
 								<td>
 									<Badge 
-										variant={order.status === 'Cancel' ? 'danger': order.status === 'Delivered'?'success':'primary'}
+										variant={order.status === 'Cancel' ? 'danger': order.status === 'Delivered'?'success':'info'}
 										className="rounded px-2 py-2"
 									>
 										{order.status}
@@ -309,6 +330,17 @@ const OrderList = ({history}) => {
 							{showFilters()}
 							{orders.length ? showOrderList() : ''}
 							{showChangeStatusModal()}
+							{
+								total_page > 0 && currentPage && 
+								<Pagination
+									limit={limit}
+									total_page={total_page}
+									current_page={current_page}
+									onPaginationChanged={onPaginationChanged}
+								>
+
+								</Pagination>
+							}
 						</div>
 					</div>
 				</div>

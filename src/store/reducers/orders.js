@@ -13,6 +13,9 @@ import {
 
 const initialState = {
 	orders: [],
+	total: 0,
+	current_page:1,
+	limit: 10,
 	order: {},
 	status: {
 		isSuccess: false,
@@ -26,12 +29,16 @@ const initialState = {
 const order = (state = initialState,action) => {
 	switch(action.type){
 		case GET_ORDERS: {
-			const {orders} = action
+			const {orders,total,current_page,limit,total_page} = action
 			return {
 				...state,
 				orders: [
 					...orders
 				],
+				total: total,
+				current_page:current_page,
+				limit: limit,
+				total_page: total_page,
 				status: {
 					...state.status,
 					isSuccess: true,

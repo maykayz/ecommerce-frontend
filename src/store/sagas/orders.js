@@ -1,4 +1,4 @@
-import { call, put, takeEvery} from 'redux-saga/effects'
+import { call, put, takeEvery,takeLatest} from 'redux-saga/effects'
 import {getOrders,createOrder, getOrder,cancelOrder,changeOrderStatus} from '../../services/order'
 import {
 	GET_ORDERS_REQUESTED,
@@ -24,11 +24,14 @@ function* getOrdersRequested(action){
 	const {filters} = action
 	try{
 		const res = yield call(getOrders,filters)
-		console.log(res.data.data)
 		if(res){
 			yield put({
 				type: GET_ORDERS,
-				orders: res.data.data
+				orders: res.data.data,
+				total: res.data.total,
+				limit: res.data.limit,
+				total_page: res.data.totalPage,
+				current_page: res.data.currentPage
 			})
 		}
 	}catch(e){
@@ -154,7 +157,7 @@ function* updateOrderStatusRequested(action){
 }
 
 function* orderSaga(){
-	yield takeEvery(GET_ORDERS_REQUESTED,getOrdersRequested)
+	yield takeLatest(GET_ORDERS_REQUESTED,getOrdersRequested)
 	yield takeEvery(ADD_ORDER_REQUESTED,createOrderRequested)
 	yield takeEvery(GET_ORDER_REQUESTED,getOrderRequested)
 	yield takeEvery(CANCEL_ORDER_REQUESTED,cancelOrderRequested)

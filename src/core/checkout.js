@@ -19,7 +19,7 @@ const Checkout = ({onCheckoutClick}) => {
 		expYear: '',
 		expirationDate: ''
 	})
-	const [payment_type,setPaymentType] = useState('Master/Visa')
+	const [payment_type,setPaymentType] = useState('COD')
 	const [clientToken,setClientToken] 	= useState('asdfasdfa asdfasdfasd asfsdfasdfas')
 	const user 							= JSON.parse(localStorage.getItem('jwt'))
 	const user_id 						= user._id
@@ -169,21 +169,21 @@ const Checkout = ({onCheckoutClick}) => {
 					Payment Type
 				</FormLabel>
 				<Form.Group className="d-flex flex-row">
-					<FormCheck className="pr-2 d-flex flex-row align-items-center">
+					{/* <FormCheck className="pr-2 d-flex flex-row align-items-center">
 						<FormCheck.Input type="radio" name="payment_type" value='Master/Visa' checked={payment_type === 'Master/Visa' ? true : false}  onChange={onPaymentTypeChanged('payment_type')}></FormCheck.Input>
 						<FormCheck.Label><img style={{height:'60px'}} src={visaImage} alt="Visa"></img> </FormCheck.Label>
 					</FormCheck>
 					<FormCheck className="pr-2 d-flex flex-row align-items-center">
 						<FormCheck.Input type="radio" name="payment_type" value='Paypal' checked={payment_type === 'Paypal' ? true : false}  onChange={onPaymentTypeChanged('payment_type')}></FormCheck.Input>
 						<FormCheck.Label><img style={{height:'60px'}} src={paypalImage} alt="Visa"></img> </FormCheck.Label>
-					</FormCheck>
+					</FormCheck> */}
 					<FormCheck className="pr-2 d-flex flex-row align-items-center">
 						<FormCheck.Input type="radio" name="payment_type" value='COD' checked={payment_type === 'COD' ? true : false}  onChange={onPaymentTypeChanged('payment_type')}></FormCheck.Input>
 						<FormCheck.Label><img style={{height:'60px'}} src={codImage} alt="Visa"></img> </FormCheck.Label>
 					</FormCheck>
 				</Form.Group>
 			</FormGroup>
-			{
+			{/* {
 				payment_type === 'Master/Visa' ?
 				showMasterVisaForm() 
 				: 
@@ -191,7 +191,8 @@ const Checkout = ({onCheckoutClick}) => {
 				showPaypalForm() 
 				: 
 				showCODForm()
-			}
+			} */}
+			{showCODForm()}
 			<Button type="submit" className="big-btn btn-white my-4">Checkout</Button>
 		</Form>
 	)
