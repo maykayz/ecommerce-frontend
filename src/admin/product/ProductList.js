@@ -5,8 +5,6 @@ import {useDispatch,useSelector} from 'react-redux'
 import {getProducts,deleteProduct} from '../../store/actions/products'
 
 import Layout from '../../core/Layout'
-import editIcon from '../../assets/images/edit.svg'
-import deleteIcon from '../../assets/images/delete.svg'
 import dummyImage from '../../assets/images/dummy.jpg'
 
 const ProductList = () => {

@@ -35,6 +35,7 @@ import ProductCreate from './admin/product/ProductCreate'
 import ProductUpdate from './admin/product/ProductUpdate'
 
 import OrderList from './admin/order/OrderList'
+import AdminOrderDetails from './admin/order/OrderDetails'
 
 const Routes = () => {
 	return(
@@ -69,6 +70,7 @@ const Routes = () => {
 					<AdminRoute path="/admin/product/:id" exact component={ProductUpdate}></AdminRoute>
 
 					<AdminRoute path="/admin/order" exact component={OrderList}></AdminRoute>
+					<AdminRoute path="/admin/order/:id" exact component={AdminOrderDetails}></AdminRoute>
 
 				</Switch>
 			</Router>

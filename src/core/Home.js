@@ -48,14 +48,14 @@ const Home = () => {
 	useEffect(() => {
 		dispatch(getCategories())
 		dispatch(getBrands())
-	},[])
+	},[dispatch])
 
 	useEffect(() => {
 		dispatch(getProducts({
 			...initialFilter,
 			keyword:searchParams
 		}))
-	},[searchParams])
+	},[dispatch,searchParams])
 
 	const showProductList = () => (
 		products.map((item,index) => {

@@ -2,7 +2,12 @@
 	.dropdown-menu{
 		position:absolute!important;
 	}
+	.dropdown-item:hover,.dropdown-item.active, .dropdown-item:active{
+		background:black!important;
+		color:#fff!important;
+	}
 }
+
 #basic-navbar-nav{
 	.nav-link{
 		padding: 5px 10px!important;

@@ -3,8 +3,8 @@ import {
 	UPDATE_USER,
 	GET_ORDER_HISTORY,
 	ADD_ORDER_HISTORY,
-	ERROR,
-	SUCCESS
+	// ERROR,
+	// SUCCESS
 } from '../types/user'
 
 

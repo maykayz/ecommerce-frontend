@@ -2,28 +2,28 @@ import React, {useState } from 'react'
 import { useSelector } from 'react-redux'
 import { motion,AnimatePresence } from "framer-motion"
 import { Button,FormCheck,Form,FormGroup,FormLabel,FormControl } from 'react-bootstrap'
-import braintree from 'braintree-web'
+// import braintree from 'braintree-web'
 
-import visaImage from '../assets/images/master.png'
-import paypalImage from '../assets/images/paypal.png'
+// import visaImage from '../assets/images/master.png'
+// import paypalImage from '../assets/images/paypal.png'
 import codImage from '../assets/images/COD.png'
 
 const Checkout = ({onCheckoutClick}) => {
 
 	const cart_items 					= useSelector(state => state.cart ? state.cart : [])
 
-	const [values,setValues] = useState({
-		cardholderName: '',
-		number: '',
-		expMonth: '',
-		expYear: '',
-		expirationDate: ''
-	})
+	// const [values,setValues] = useState({
+	// 	cardholderName: '',
+	// 	number: '',
+	// 	expMonth: '',
+	// 	expYear: '',
+	// 	expirationDate: ''
+	// })
 	const [payment_type,setPaymentType] = useState('COD')
-	const [clientToken,setClientToken] 	= useState('asdfasdfa asdfasdfasd asfsdfasdfas')
+	// const [clientToken,setClientToken] 	= useState('asdfasdfa asdfasdfasd asfsdfasdfas')
 	const user 							= JSON.parse(localStorage.getItem('jwt'))
-	const user_id 						= user._id
-	const [shipping,setShipping]				= useState({
+	// const user_id 						= user._id
+	const [shipping,setShipping]		= useState({
 		phone: '',
 		address: '',
 		zipcode: ''
@@ -41,13 +41,13 @@ const Checkout = ({onCheckoutClick}) => {
 		
 	}
 
-	const onValueChanged = (name) => (e) => {
-		e.preventDefault()
-		setValues({
-			...values,
-			[name]: e.target.value
-		})
-	}
+	// const onValueChanged = (name) => (e) => {
+	// 	e.preventDefault()
+	// 	setValues({
+	// 		...values,
+	// 		[name]: e.target.value
+	// 	})
+	// }
 
 	const onPaymentTypeChanged = (payment_type) => (e) => {
 
@@ -63,72 +63,72 @@ const Checkout = ({onCheckoutClick}) => {
 		}
 	}
 
-	const showMasterVisaForm = () => (
-		<AnimatePresence>
-		<motion.div
-			initial={{ opacity: 0 }}
-			animate={{ opacity: 1 }}
-			exit={{ opacity: 0 }}
-			transition={{easings:'easeInOut',duration:0.8}}
-		>
-			<FormGroup>
-				<FormLabel htmlFor="card-holder-name">
-					Card Holder Name
-				</FormLabel>
-				<FormControl name="card-holder-name" id="cc-name" type="text" placeholder="Name" value={values.cardholderName} onChange={onValueChanged('cardholderName')}>	
-				</FormControl>
-			</FormGroup>
-			<FormGroup>
-				<FormLabel htmlFor="card-holder-name">
-					Card Number
-				</FormLabel>
-				<FormControl name="card-number" id="cc-number"  type="text" placeholder="xxxx xxxx xxxx xxxx" value={values.number} onChange={onValueChanged('number')}>	
-				</FormControl>
-			</FormGroup>
-			<div className="d-flex flex-row">
-				<FormGroup className="mr-3">
-					<FormLabel htmlFor="card-holder-name">
-						Month
-					</FormLabel>
-					<FormControl name="expiry-month" id="cc-expiration"  type="text" placeholder="MM" value={values.expMonth} onChange={onValueChanged('expMonth')}>	
-					</FormControl>
-				</FormGroup>
-				<FormGroup className="mr-3">
-					<FormLabel htmlFor="card-holder-name">
-						Year
-					</FormLabel>
-					<FormControl name="card-holder-name" type="text" placeholder="YY" value={values.expYear} onChange={onValueChanged('expYear')}>	
-					</FormControl>
-				</FormGroup>
-				<FormGroup>
-					<FormLabel htmlFor="card-holder-name">
-						CVV
-					</FormLabel>
-					<FormControl name="card-holder-name" id="cc-cvv"  type="text" placeholder="xxx" value={values.cvv} onChange={onValueChanged('cvv')}>	
-					</FormControl>
-				</FormGroup>
-			</div>
-			</motion.div>
-		</AnimatePresence>
-	)
-	const showPaypalForm = () => (
-		<AnimatePresence>
-		<motion.div
-			initial={{ opacity: 0 }}
-			animate={{ opacity: 1 }}
-			exit={{ opacity: 0 }}
-			transition={{easings:'easeInOut',duration:0.8}}
-		>
-			<FormGroup>
-				<FormLabel htmlFor="paypal-email">
-					Email
-				</FormLabel>
-				<FormControl name="paypal-email">	
-				</FormControl>
-			</FormGroup>
-			</motion.div>
-		</AnimatePresence>
-	)
+	// const showMasterVisaForm = () => (
+	// 	<AnimatePresence>
+	// 	<motion.div
+	// 		initial={{ opacity: 0 }}
+	// 		animate={{ opacity: 1 }}
+	// 		exit={{ opacity: 0 }}
+	// 		transition={{easings:'easeInOut',duration:0.8}}
+	// 	>
+	// 		<FormGroup>
+	// 			<FormLabel htmlFor="card-holder-name">
+	// 				Card Holder Name
+	// 			</FormLabel>
+	// 			<FormControl name="card-holder-name" id="cc-name" type="text" placeholder="Name" value={values.cardholderName} onChange={onValueChanged('cardholderName')}>	
+	// 			</FormControl>
+	// 		</FormGroup>
+	// 		<FormGroup>
+	// 			<FormLabel htmlFor="card-holder-name">
+	// 				Card Number
+	// 			</FormLabel>
+	// 			<FormControl name="card-number" id="cc-number"  type="text" placeholder="xxxx xxxx xxxx xxxx" value={values.number} onChange={onValueChanged('number')}>	
+	// 			</FormControl>
+	// 		</FormGroup>
+	// 		<div className="d-flex flex-row">
+	// 			<FormGroup className="mr-3">
+	// 				<FormLabel htmlFor="card-holder-name">
+	// 					Month
+	// 				</FormLabel>
+	// 				<FormControl name="expiry-month" id="cc-expiration"  type="text" placeholder="MM" value={values.expMonth} onChange={onValueChanged('expMonth')}>	
+	// 				</FormControl>
+	// 			</FormGroup>
+	// 			<FormGroup className="mr-3">
+	// 				<FormLabel htmlFor="card-holder-name">
+	// 					Year
+	// 				</FormLabel>
+	// 				<FormControl name="card-holder-name" type="text" placeholder="YY" value={values.expYear} onChange={onValueChanged('expYear')}>	
+	// 				</FormControl>
+	// 			</FormGroup>
+	// 			<FormGroup>
+	// 				<FormLabel htmlFor="card-holder-name">
+	// 					CVV
+	// 				</FormLabel>
+	// 				<FormControl name="card-holder-name" id="cc-cvv"  type="text" placeholder="xxx" value={values.cvv} onChange={onValueChanged('cvv')}>	
+	// 				</FormControl>
+	// 			</FormGroup>
+	// 		</div>
+	// 		</motion.div>
+	// 	</AnimatePresence>
+	// )
+	// const showPaypalForm = () => (
+	// 	<AnimatePresence>
+	// 	<motion.div
+	// 		initial={{ opacity: 0 }}
+	// 		animate={{ opacity: 1 }}
+	// 		exit={{ opacity: 0 }}
+	// 		transition={{easings:'easeInOut',duration:0.8}}
+	// 	>
+	// 		<FormGroup>
+	// 			<FormLabel htmlFor="paypal-email">
+	// 				Email
+	// 			</FormLabel>
+	// 			<FormControl name="paypal-email">	
+	// 			</FormControl>
+	// 		</FormGroup>
+	// 		</motion.div>
+	// 	</AnimatePresence>
+	// )
 	const showCODForm = () => (
 		<AnimatePresence>
 			<motion.div

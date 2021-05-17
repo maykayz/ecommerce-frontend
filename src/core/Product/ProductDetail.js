@@ -7,8 +7,7 @@ import {useParams} from 'react-router'
 import swal from 'sweetalert';
 
 import {
-	Badge,
-	Button
+	Badge
 } from 'react-bootstrap'
 
 import {

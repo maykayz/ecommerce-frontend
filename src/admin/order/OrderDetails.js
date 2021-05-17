@@ -1,14 +1,12 @@
 import React, {useEffect} from 'react'
 import {useSelector,useDispatch} from 'react-redux'
-import {Button} from 'react-bootstrap'
 import {useParams,Link} from 'react-router-dom'
-import { motion,AnimatePresence } from "framer-motion"
 import Stepper from 'react-stepper-horizontal';
 import moment from 'moment'
-import {getOrder,cancelOrder} from '../../store/actions/orders'
+import {getOrder} from '../../store/actions/orders'
 import { currencyFormatter } from '../../helpers'
 import {API_URL} from '../../config'
-import Layout from '../Layout'
+import Layout from '../../core/Layout'
 
 
 const OrderDetail = () => {
@@ -18,11 +16,15 @@ const OrderDetail = () => {
 	const order = useSelector(state => state.orders.order ? state.orders.order : {})
 	const breadcrumbs = [
 		{
-			to: '/user/dashboard',
+			to: '/admin/dashboard',
 			title: 'Dashboard',
 		},
 		{
-			to: `/orders/${id}`,
+			to: '/admin/order',
+			title: 'Orders',
+		},
+		{
+			to: `/admin/orders/${id}`,
 			title: 'Order Details',
 		},
 	]
@@ -33,15 +35,9 @@ const OrderDetail = () => {
 
 	const showProducts = () => (
 		<div className="">  
-			{/* <h5 className="pb-3">Products</h5> */}
 			{
 				order.items.map((item,index) => (
-				<AnimatePresence key={index}>
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{easings:'easeOut'}}
+					<div
 						className="cart-item d-flex flex-row align-items-center justify-content-between py-2" 
 						
 					>
@@ -61,8 +57,7 @@ const OrderDetail = () => {
 						<div className="col-3">
 							{currencyFormatter((item.discount_price ? item.discount_price : item.price) * item.count)} MMK
 						</div>
-					</motion.div>
-				</AnimatePresence>
+					</div>
 			))
 			}
 		</div>
@@ -195,11 +190,6 @@ const OrderDetail = () => {
 		</div>
 	)
 
-	const onCancelOrder = (e) => {
-		e.preventDefault()
-		dispatch(cancelOrder(id))
-	}
-
 	return (
 		<Layout breadcrumbs={breadcrumbs} className="container">
 			<div className="row my-5">
@@ -218,12 +208,6 @@ const OrderDetail = () => {
 						{
 							showAmount()
 						}
-						{
-						order.status === 'New' &&
-						<Button type="submit" className="big-btn float-right" onClick={onCancelOrder}>
-							Cancel Order
-						</Button>
-					}
 				</div>
 				<div className="col-12 col-md-4">
 					{showPaymentInfo()}

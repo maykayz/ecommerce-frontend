@@ -1,7 +1,7 @@
 import React, {useEffect,useState} from 'react'
 import {Link,withRouter} from 'react-router-dom'
 import swal from 'sweetalert';
-import {Button,ButtonGroup,Badge,Table,Alert,Modal,FormGroup,FormLabel,FormControl,Form} from 'react-bootstrap'
+import {Button,ButtonGroup,Badge,Table,Modal,FormGroup,FormLabel,FormControl,Form} from 'react-bootstrap'
 import {useDispatch,useSelector} from 'react-redux'
 import moment from 'moment'
 import Stepper from 'react-stepper-horizontal';
@@ -19,7 +19,6 @@ const OrderList = ({history}) => {
 	const total_page 	= useSelector(state => state.orders.total_page ? state.orders.total_page : 0)
 	const limit 	= useSelector(state => state.orders.limit ? state.orders.limit : 10)
 	const current_page 	= useSelector(state => state.orders.current_page ? state.orders.current_page : 1)
-	const [currentPage,setCurrentPage] = useState(1)
 	const initFilter = {
 		status: '',
 		start_date: '',
@@ -110,9 +109,6 @@ const OrderList = ({history}) => {
 		item.status = status
 		dispatch(updateOrderStatus(item))
 		setIsModalOpen(false)
-	}
-	const onEditHandler = (id) => (e) => {
-
 	}
 	const onCancelHandler = (id) => (e) => {
 		swal({
@@ -277,6 +273,16 @@ const OrderList = ({history}) => {
 									<ButtonGroup className="float-right">
 										{
 											order.status && 
+											<Link className="btn btn-outline-primary" to={`/admin/order/${order._id}`}>
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye" viewBox="0 0 16 16">
+												<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+												<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+											</svg>
+											</Link>
+											
+										}
+										{
+											order.status && 
 											<Button variant="outline-primary" onClick={showModalHandler(order)}>
 												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-menu-button-wide-fill" viewBox="0 0 16 16">
 													<path d="M1.5 0A1.5 1.5 0 0 0 0 1.5v2A1.5 1.5 0 0 0 1.5 5h13A1.5 1.5 0 0 0 16 3.5v-2A1.5 1.5 0 0 0 14.5 0h-13zm1 2h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1zm9.927.427A.25.25 0 0 1 12.604 2h.792a.25.25 0 0 1 .177.427l-.396.396a.25.25 0 0 1-.354 0l-.396-.396zM0 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8zm1 3v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2H1zm14-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2h14zM2 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
@@ -284,7 +290,7 @@ const OrderList = ({history}) => {
 											</Button>
 											
 										}
-										{
+										{/* {
 											order.status !== 'Delivered' && order.status !== 'Cancel' &&
 											<Button variant="outline-primary" onClick={onEditHandler(order._id)}>
 												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -292,7 +298,7 @@ const OrderList = ({history}) => {
 													<path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
 												</svg>
 											</Button>
-										}
+										} */}
 										{
 											order.status === 'New' &&
 											<Button variant="outline-primary" onClick={onCancelHandler(order._id)}>
@@ -331,7 +337,7 @@ const OrderList = ({history}) => {
 							{orders.length ? showOrderList() : ''}
 							{showChangeStatusModal()}
 							{
-								total_page > 0 && currentPage && 
+								total_page > 0 && current_page && 
 								<Pagination
 									limit={limit}
 									total_page={total_page}

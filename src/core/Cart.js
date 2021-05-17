@@ -18,13 +18,13 @@ const Cart = ({history}) => {
 	const dispatch = useDispatch()
 	const cart_items = useSelector(state => state.cart ? state.cart : [])
 	const {isError} = useSelector(state => state.orders ? state.orders : [])
-	const {register, handleSubmit} = useForm();
+	const {register} = useForm();
 	const shipping_charges = 0
 	const discount = 0
 
 	useEffect(() => {
 		dispatch(getCart())
-	}, [])
+	}, [dispatch])
 
 	const onCartUpdateHandler = (item) => (e) => {
 		item.count = parseInt(e.target.value)
